@@ -1,3 +1,4 @@
+import 'package:elections_match/widgets/election_item.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -73,13 +74,8 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: const Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text('test')
-          ],
-        ),
+      body: Center(
+        child: ListView.builder(itemCount: 3, itemBuilder: itemBuilder)
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
@@ -87,5 +83,15 @@ class _HomePageState extends State<HomePage> {
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  Widget itemBuilder(BuildContext context, int index) {
+    return GestureDetector(child: MouseRegion(cursor: SystemMouseCursors.click,
+        child: ElectionItem("Hawaii")),
+    onTap: electionSelected(index));
+  }
+
+  electionSelected(int index) {
+
   }
 }
