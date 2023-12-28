@@ -1,5 +1,10 @@
-import 'package:elections_match/widgets/election_item.dart';
+import 'package:elections_match/models/data.dart';
+import 'package:elections_match/widgets/elections_item.dart';
+import 'package:elections_match/widgets/elections_screen.dart';
+import 'package:elections_match/widgets/styles.dart';
 import 'package:flutter/material.dart';
+
+import 'models/fake_data_model.dart';
 
 void main() {
   runApp(const MyApp());
@@ -71,11 +76,11 @@ class _HomePageState extends State<HomePage> {
     // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: appBarBackgroundColor(context),
         title: Text(widget.title),
       ),
       body: Center(
-        child: ListView.builder(itemCount: 3, itemBuilder: itemBuilder)
+        child: ListView.builder(itemCount: CATALOG.length, itemBuilder: itemBuilder)
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
@@ -86,12 +91,15 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget itemBuilder(BuildContext context, int index) {
-    return GestureDetector(child: MouseRegion(cursor: SystemMouseCursors.click,
-        child: ElectionItem("Hawaii")),
-    onTap: electionSelected(index));
+    return GestureDetector(
+        onTap: () => electionSelected(ELECTIONS[index]),
+        child: MouseRegion(
+            cursor: SystemMouseCursors.click,
+            child: ElectionsListItem(ELECTIONS[index])));
   }
 
-  electionSelected(int index) {
-
+  electionSelected(Elections elections) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => ElectionsScreen(elections)));
   }
+
 }
