@@ -1,16 +1,15 @@
 
 
 import 'dart:core';
-import 'dart:core';
 
 
 class Elections {
   String name;
   String description;
   List<Party> parties;
-  List<Question> questions;
+  List<QuestionGroup>? questionGroups;
 
-  Elections(this.name, this.description, this.parties, this.questions);
+  Elections(this.name, this.description, this.parties, this.questionGroups);
 }
 
 
@@ -28,6 +27,13 @@ class Candidate {
 
 enum QuestionType {
   AGREEMENT,
+}
+
+class QuestionGroup {
+  String name;
+  List<Question> questions;
+
+  QuestionGroup(this.name, this.questions);
 }
 
 class Question {
