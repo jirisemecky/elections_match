@@ -5,7 +5,7 @@ import '../models/data.dart';
 
 /// Class for displaying single election as an item of a list.
 class ElectionsListItem extends StatelessWidget {
-  Elections elections;
+  final Elections elections;
 
   @override
   Widget build(BuildContext context) {

@@ -45,7 +45,7 @@ final List<Question> _educationQuestions = [
 ];
 
 
-final List<Elections> ELECTIONS = [
+final List<Elections> fakeElections = [
   Elections('Hawaii', 'Elections for parliament in Hawai in Spring 2024', _hawaiiParties, [welfare, health, education]),
   Elections('Prague', 'Presidential elections in Czech', _czechParties, [welfare, health, education]),
   Elections('New York', 'Voting of local policemen', [Party('Good cop'), Party('Bad cop')], [welfare, health, education]),

@@ -1,10 +1,8 @@
 import 'package:elections_match/models/data.dart';
+import 'package:elections_match/screens/matching_screen.dart';
 import 'package:elections_match/widgets/party_card.dart';
 import 'package:elections_match/widgets/styles.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'matching_screen.dart';
 
 class ElectionsScreen extends StatelessWidget {
   final Elections elections;
@@ -46,11 +44,11 @@ class ElectionsScreen extends StatelessWidget {
 
   Widget buildMatchingSection(BuildContext context) =>
       Column(children: [
-        Text('Candidate matching'),
+        const Text('Candidate matching'),
         ElevatedButton(
             onPressed: () => runElectionMatching(context),
             style: ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20)),
-            child: Text('Run election matching'))
+            child: const Text('Run election matching'))
       ],);
 
 

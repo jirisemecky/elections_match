@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import '../models/data.dart';
 
 class PartyCard extends StatelessWidget {
-  Party party;
+  final Party party;
 
   PartyCard(this.party, {super.key});
 
