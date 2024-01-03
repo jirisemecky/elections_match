@@ -7,7 +7,7 @@ class Elections {
   String name;
   String description;
   List<Party> parties;
-  List<QuestionGroup>? questionGroups;
+  List<QuestionGroup> questionGroups;
 
   Elections(this.name, this.description, this.parties, this.questionGroups);
 }
