@@ -1,5 +1,4 @@
 import 'package:elections_match/models/data.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MatchingResultsScreen extends StatelessWidget {

@@ -1,5 +1,4 @@
 import 'package:elections_match/models/data.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class QuestionSelector extends StatelessWidget {
@@ -8,7 +7,7 @@ class QuestionSelector extends StatelessWidget {
 
   static const cardColor = Colors.greenAccent;
 
-  QuestionSelector(this.question, this.number, {super.key});
+  const QuestionSelector(this.question, this.number, {super.key});
 
   @override
   Widget build(BuildContext context) => Card(
@@ -26,10 +25,10 @@ class QuestionSelector extends StatelessWidget {
 
   Widget buildSelectorWidgert() {
     var segments = <ButtonSegment>[
-      ButtonSegment(label: Text('Yes'), value: 1),
-      ButtonSegment(label: Text('Rather yes'), value: 0.5),
-      ButtonSegment(label: Text('Rather no'), value:-.5),
-      ButtonSegment(label: Text('No'), value: -1),
+      const ButtonSegment(label: Text('Yes'), value: 1),
+      const ButtonSegment(label: Text('Rather yes'), value: 0.5),
+      const ButtonSegment(label: Text('Rather no'), value:-.5),
+      const ButtonSegment(label: Text('No'), value: -1),
     ];
     return SegmentedButton(emptySelectionAllowed: true,
         segments: segments, selected: const {},
