@@ -1,11 +1,8 @@
-import 'dart:js';
-
 import 'package:elections_match/models/data.dart';
 import 'package:elections_match/screens/matching_results_screen.dart';
 import 'package:elections_match/widgets/question_selector.dart';
 import 'package:elections_match/widgets/styles.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class MatchingScreen extends StatelessWidget {
   final Elections elections;
@@ -49,12 +46,12 @@ class MatchingScreen extends StatelessWidget {
 
     final navigationRow = Row(children: [
       if (index > 1)
-        ElevatedButton(onPressed: previousGroup, child: Text('Previous')),
+        ElevatedButton(onPressed: previousGroup, child: const Text('Previous')),
       const Spacer(),
       if (index < numberOfGroups)
-        ElevatedButton(onPressed: nextGroup, child: Text('Next')),
+        ElevatedButton(onPressed: nextGroup, child: const Text('Next')),
       if (index == numberOfGroups)
-        ElevatedButton(onPressed: () => submitAnswers(context), child: Text('Submit'))
+        ElevatedButton(onPressed: () => submitAnswers(context), child: const Text('Submit'))
     ]);
 
     return Column(

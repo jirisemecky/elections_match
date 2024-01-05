@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../models/data.dart';
@@ -20,5 +19,5 @@ class ElectionsListItem extends StatelessWidget {
     );
   }
 
-  ElectionsListItem(this.elections, {super.key});
+  const ElectionsListItem(this.elections, {super.key});
 }

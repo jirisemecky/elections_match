@@ -26,7 +26,7 @@ class Candidate {
 }
 
 enum QuestionType {
-  AGREEMENT,
+  agreement,
 }
 
 class QuestionGroup {
@@ -40,6 +40,6 @@ class Question {
   String text;
   QuestionType type;
 
-  Question(this.text) : type = QuestionType.AGREEMENT;
+  Question(this.text) : type = QuestionType.agreement;
 
 }

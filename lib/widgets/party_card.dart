@@ -5,7 +5,7 @@ import '../models/data.dart';
 class PartyCard extends StatelessWidget {
   final Party party;
 
-  PartyCard(this.party, {super.key});
+  const PartyCard(this.party, {super.key});
 
   @override
   Widget build(BuildContext context) {
