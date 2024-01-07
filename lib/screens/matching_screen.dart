@@ -4,37 +4,54 @@ import 'package:elections_match/widgets/question_selector.dart';
 import 'package:elections_match/widgets/styles.dart';
 import 'package:flutter/material.dart';
 
-class MatchingScreen extends StatelessWidget {
+class MatchingScreen extends StatefulWidget {
   final Elections elections;
 
-  const MatchingScreen(this.elections, {super.key});
+  State<MatchingScreen> createState() => _MatchingScreenState();
+
+  MatchingScreen(this.elections, {super.key});
+}
+
+class _MatchingScreenState extends State<MatchingScreen> with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: widget.elections.questionGroups.length, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-        length: elections.questionGroups.length,
-        child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: appBarBackgroundColor(context),
-            title: Text('Matching candidates for ${elections.name}'),
-            bottom: buildTabBar(),
-          ),
-          body: buildQuestionGroups(context),
-        ));
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: appBarBackgroundColor(context),
+        title: Text('Matching candidates for ${widget.elections.name}'),
+        bottom: buildTabBar(),
+      ),
+      body: buildQuestionGroups(context),
+    );
   }
 
   TabBar buildTabBar() => TabBar(
         isScrollable: true,
-        tabs: [for (final g in elections.questionGroups) Tab(text: g.name)],
+        controller: _tabController,
+        tabs: [for (final g in widget.elections.questionGroups) Tab(text: g.name)],
       );
 
-  Widget buildQuestionGroups(BuildContext context) {
+  TabBarView buildQuestionGroups(BuildContext context) {
     int i = 1;
     final children = <Widget>[];
-    for (final g in elections.questionGroups) {
-      children.add(buildGroupWidget(context, g, i++, elections.questionGroups.length));
+    for (final g in widget.elections.questionGroups) {
+      children.add(buildGroupWidget(context, g, i++, widget.elections.questionGroups.length));
     }
-    return TabBarView(children: children);
+    return TabBarView(children: children, controller: _tabController,);
   }
 
   buildGroupWidget(BuildContext context, QuestionGroup group, int index, int numberOfGroups) {
@@ -45,28 +62,25 @@ class MatchingScreen extends StatelessWidget {
     }
 
     final navigationRow = Row(children: [
-      if (index > 1)
-        ElevatedButton(onPressed: previousGroup, child: const Text('Previous')),
+      if (index > 1) ElevatedButton(onPressed: previousGroup, child: const Text('Previous')),
       const Spacer(),
-      if (index < numberOfGroups)
-        ElevatedButton(onPressed: nextGroup, child: const Text('Next')),
+      if (index < numberOfGroups) ElevatedButton(onPressed: nextGroup, child: const Text('Next')),
       if (index == numberOfGroups)
         ElevatedButton(onPressed: () => submitAnswers(context), child: const Text('Submit'))
     ]);
 
     return Column(
-        children: <Widget>[
-              AppBar(automaticallyImplyLeading: false, title: Text(group.name))
-            ] +
+        children: <Widget>[AppBar(automaticallyImplyLeading: false, title: Text(group.name))] +
             questionWidgets +
             [navigationRow]);
   }
 
-  void previousGroup() {}
-  void nextGroup() {}
+  void previousGroup() => _tabController.animateTo(_tabController.index -1);
+
+  void nextGroup() => _tabController.animateTo(_tabController.index + 1);
 
   void submitAnswers(BuildContext context) {
-
-    Navigator.push(context, MaterialPageRoute(builder: (context) => MatchingResultsScreen(elections)));
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => MatchingResultsScreen(widget.elections)));
   }
 }
