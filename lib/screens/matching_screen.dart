@@ -7,9 +7,10 @@ import 'package:flutter/material.dart';
 class MatchingScreen extends StatefulWidget {
   final Elections elections;
 
+  @override
   State<MatchingScreen> createState() => _MatchingScreenState();
 
-  MatchingScreen(this.elections, {super.key});
+  const MatchingScreen(this.elections, {super.key});
 }
 
 class _MatchingScreenState extends State<MatchingScreen> with SingleTickerProviderStateMixin {
@@ -51,7 +52,7 @@ class _MatchingScreenState extends State<MatchingScreen> with SingleTickerProvid
     for (final g in widget.elections.questionGroups) {
       children.add(buildGroupWidget(context, g, i++, widget.elections.questionGroups.length));
     }
-    return TabBarView(children: children, controller: _tabController,);
+    return TabBarView(controller: _tabController,children: children);
   }
 
   buildGroupWidget(BuildContext context, QuestionGroup group, int index, int numberOfGroups) {
