@@ -170,16 +170,15 @@ final List<Question> _economyAndLabourQuestions = [
 final List<Question> _energyAndTransportQuestions = [
   Question('Should busy sections of highways be widened?'),
   Question(
-      'Should Switzerland ban the registration of new passenger cars with ￼internal combustion engines starting in 2035?'),
+      'Should Switzerland ban the registration of new passenger cars with internal combustion engines starting in 2035?'),
   Question(
       'To achieve climate targets, should incentives and target agreements be relied on exclusively, rather than bans and restrictions?'),
-  Question('Do you think it'
-      's fair that environmental and landscape protection rules are being relaxed to allow for the development of ￼renewable energy?'),
+  Question('Do you think it''s fair that environmental and landscape protection rules are being relaxed to allow for the development of renewable energy?'),
   Question('Should the construction of new nuclear power plants in Switzerland be allowed again?'),
   Question(
-      'Should the state guarantee a comprehensive ￼public service offering also in rural regions?'),
+      'Should the state guarantee a comprehensive public service offering also in rural regions?'),
   Question(
-      'Would you be in favor of the introduction of increasing electricity tariffs when consumption is higher (￼progressive electricity tariffs)?'),
+      'Would you be in favor of the introduction of increasing electricity tariffs when consumption is higher (progressive electricity tariffs)?'),
 ];
 
 final List<Question> _natureAndConservationQuestions = [

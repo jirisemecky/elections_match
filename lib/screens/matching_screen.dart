@@ -59,7 +59,7 @@ class _MatchingScreenState extends State<MatchingScreen> with SingleTickerProvid
     var questionWidgets = <Widget>[];
     int i = 1;
     for (final question in group.questions) {
-      questionWidgets.add(QuestionSelector(question, i++));
+      questionWidgets.add(QuestionSelector(widget.elections, question, i++));
     }
 
     final navigationRow = Row(children: [

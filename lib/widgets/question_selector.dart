@@ -1,22 +1,27 @@
 import 'package:elections_match/models/data.dart';
+import 'package:elections_match/models/user_storage.dart';
 import 'package:flutter/material.dart';
 
 class QuestionSelector extends StatefulWidget {
+  final Elections elections;
   final Question question;
   final int number;
 
-  const QuestionSelector(this.question, this.number, {super.key});
+  const QuestionSelector(this.elections, this.question, this.number, {super.key});
 
   @override
-  State<StatefulWidget> createState() => _QuestionSelectorState();
+  State<StatefulWidget> createState() => _QuestionSelectorState(elections, question);
 }
 
 class _QuestionSelectorState extends State<QuestionSelector> {
   static const ratherAnswerMultiplier = 0.5;
   static const cardColor = Colors.greenAccent;
 
-  num? selected;
-  double weight = 1;
+  QuestionResponse data;
+
+
+  _QuestionSelectorState(Elections elections, Question question)
+      : this.data = getUserStorage().getElections(elections).getQuestion(question);
 
   @override
   Widget build(BuildContext context) =>
@@ -47,19 +52,19 @@ class _QuestionSelectorState extends State<QuestionSelector> {
     ];
     return SegmentedButton(emptySelectionAllowed: true,
       segments: segments,
-      selected: selected == null ? {} : {selected},
+      selected: {data.response},
       onSelectionChanged: selectionChanged,);
   }
 
   Widget buildWeightWidget() {
     return Row(children: [
-      Text('Weight ${weight.toStringAsFixed(1)}:'),
+      Text('Weight ${data.weight?.toStringAsFixed(1)}:'),
       Slider(
         divisions: 4,
         min: 0.4,
         max: 1.6,
         label: 'Weight',
-        value: weight,
+        value: data.weight ?? 1,
         onChanged: weightChanged,
       )
     ],);
@@ -67,13 +72,14 @@ class _QuestionSelectorState extends State<QuestionSelector> {
 
   void selectionChanged(Set selection) {
     setState(() {
-      selected = selection.firstOrNull;
+      data.response = selection.firstOrNull;
+
     });
   }
 
   void weightChanged(double value) {
     setState(() {
-      weight = value;
+      data.weight = value;
     });
   }
 }
