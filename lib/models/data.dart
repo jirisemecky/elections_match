@@ -7,9 +7,10 @@ class Elections {
   String name;
   String description;
   List<Party> parties;
+  List<Candidate> candidates;
   List<QuestionGroup> questionGroups;
 
-  Elections(this.name, this.description, this.parties, this.questionGroups);
+  Elections(this.name, this.description, this.parties, this.candidates, this.questionGroups);
 }
 
 
@@ -21,8 +22,9 @@ class Party {
 class Candidate {
   String firstName;
   String sureName;
+  Party? party;
 
-  Candidate(this.firstName, this.sureName);
+  Candidate(this.firstName, this.sureName, this.party);
 }
 
 enum QuestionType {
