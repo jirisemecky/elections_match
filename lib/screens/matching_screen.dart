@@ -52,7 +52,7 @@ class _MatchingScreenState extends State<MatchingScreen> with SingleTickerProvid
     for (final g in widget.elections.questionGroups) {
       children.add(buildGroupWidget(context, g, i++, widget.elections.questionGroups.length));
     }
-    return TabBarView(controller: _tabController,children: children);
+    return TabBarView(controller: _tabController, children: children);
   }
 
   buildGroupWidget(BuildContext context, QuestionGroup group, int index, int numberOfGroups) {
@@ -70,7 +70,8 @@ class _MatchingScreenState extends State<MatchingScreen> with SingleTickerProvid
         ElevatedButton(onPressed: () => submitAnswers(context), child: const Text('Submit'))
     ]);
 
-    return Column(
+    return ListView(
+      padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 8),
         children: <Widget>[AppBar(automaticallyImplyLeading: false, title: Text(group.name))] +
             questionWidgets +
             [navigationRow]);
