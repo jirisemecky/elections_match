@@ -28,10 +28,10 @@ final List<Candidate> _hawaiiCandidates = [
 
 final List<Party> _czechParties = [
   Party('ODS'),
-  Party('Starostove a nezavisli'),
-  Party('Pirati'),
+  Party('Starostové a nezávislí'),
+  Party('Piráti'),
   Party('ANO'),
-  Party('Komousi'),
+  Party('Komouši'),
   Party('KDU/CSL'),
   Party('Socani'),
 ];
