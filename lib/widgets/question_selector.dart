@@ -16,9 +16,11 @@ class _QuestionSelectorState extends State<QuestionSelector> {
   static const cardColor = Colors.greenAccent;
 
   num? selected;
+  double weight = 1;
 
   @override
-  Widget build(BuildContext context) => Card(
+  Widget build(BuildContext context) =>
+      Card(
         color: cardColor,
         elevation: 10,
         shadowColor: Colors.black,
@@ -26,7 +28,8 @@ class _QuestionSelectorState extends State<QuestionSelector> {
           children: [
             Text('Question #${widget.number}'),
             Text(widget.question.text),
-            buildSelectorWidget()
+            buildSelectorWidget(),
+            buildWeightWidget()
           ],
         ),
       );
@@ -34,18 +37,43 @@ class _QuestionSelectorState extends State<QuestionSelector> {
   Widget buildSelectorWidget() {
     var segments = <ButtonSegment>[
       const ButtonSegment(icon: Icon(Icons.question_mark_outlined), label: Text('Yes'), value: 1),
-      const ButtonSegment(icon: Icon(Icons.question_mark_outlined), label: Text('Rather yes'), value: ratherAnswerMultiplier),
-      const ButtonSegment(icon: Icon(Icons.question_mark_outlined), label: Text('Rather no'), value: -ratherAnswerMultiplier),
+      const ButtonSegment(icon: Icon(Icons.question_mark_outlined),
+          label: Text('Rather yes'),
+          value: ratherAnswerMultiplier),
+      const ButtonSegment(icon: Icon(Icons.question_mark_outlined),
+          label: Text('Rather no'),
+          value: -ratherAnswerMultiplier),
       const ButtonSegment(icon: Icon(Icons.question_mark_outlined), label: Text('No'), value: -1),
     ];
     return SegmentedButton(emptySelectionAllowed: true,
-        segments: segments,
+      segments: segments,
       selected: selected == null ? {} : {selected},
-    onSelectionChanged: selectionChanged,);
+      onSelectionChanged: selectionChanged,);
   }
+
+  Widget buildWeightWidget() {
+    return Row(children: [
+      Text('Weight ${weight.toStringAsFixed(1)}:'),
+      Slider(
+        divisions: 4,
+        min: 0.4,
+        max: 1.6,
+        label: 'Weight',
+        value: weight,
+        onChanged: weightChanged,
+      )
+    ],);
+  }
+
   void selectionChanged(Set selection) {
     setState(() {
       selected = selection.firstOrNull;
+    });
+  }
+
+  void weightChanged(double value) {
+    setState(() {
+      weight = value;
     });
   }
 }
