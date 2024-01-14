@@ -1,5 +1,4 @@
 import 'data.dart';
-import 'data.dart';
 
 final List<Party> _hawaiiParties = [
   Party('The leftmost party'),
