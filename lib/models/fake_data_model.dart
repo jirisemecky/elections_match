@@ -99,9 +99,9 @@ final List<Question> _welfareQuestions = [
   Question(
       'For married couples, the pension is currently limited to 150% of the maximum individual AHV pension (capping). Should this limit be eliminated?'),
   Question('Should paid parental leave be increased beyond today'
-      's 14 weeks of maternity leave and two weeks of paternity leave? [BePart question]'),
+      's 14 weeks of maternity leave and two weeks of paternity leave?'),
   Question(
-      'Should the federal government provide more financial support for public housing construction? [BePart question]'),
+      'Should the federal government provide more financial support for public housing construction?'),
 ];
 
 final List<Question> _healthQuestions = [
