@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "15847677615",
+    "project_id": "votehappy-951",
+    "storage_bucket": "votehappy-951.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:15847677615:android:ed64133673867f18dd7e5a",
+        "android_client_info": {
+          "package_name": "org.votehappy.elections.elections_match"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvj-NfUso0HFN0lcNJqGQcbnYqiLxUVxs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
