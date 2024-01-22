@@ -52,7 +52,7 @@ class Question {
 
 /// Representation of response from a candidate or a user to a question.
 class QuestionResponse {
-  double response;
+  double? response;
   double? weight;
 
   QuestionResponse(this.response);

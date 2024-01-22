@@ -73,7 +73,6 @@ class _QuestionSelectorState extends State<QuestionSelector> {
   void selectionChanged(Set selection) {
     setState(() {
       data.response = selection.firstOrNull;
-
     });
   }
 
