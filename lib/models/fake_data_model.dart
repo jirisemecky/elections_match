@@ -98,8 +98,6 @@ final List<Question> _welfareQuestions = [
       'Should the federal government allocate more funding for health insurance premium subsidies'),
   Question(
       'For married couples, the pension is currently limited to 150% of the maximum individual AHV pension (capping). Should this limit be eliminated?'),
-  Question(
-      'For married couples, the pension is currently limited to 150% of the maximum individual AHV pension (capping). Should this limit be eliminated?'),
   Question('Should paid parental leave be increased beyond today'
       's 14 weeks of maternity leave and two weeks of paternity leave? [BePart question]'),
   Question(
