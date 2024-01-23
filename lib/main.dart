@@ -103,9 +103,11 @@ class _HomePageState extends State<HomePage> {
 
   void initiateDatabase() async {
     await db.collection('elections').get().then((event) {
-      for (var elections in event.docs) {
-        print('${elections.id} => ${elections.data()}');
-      }
+      setState(() {
+        for (var elections in event.docs) {
+          print('${elections.id} => ${elections.data()}');
+        }
+      });
     });
   }
 
