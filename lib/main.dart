@@ -2,7 +2,6 @@ import 'package:elections_match/models/data.dart';
 import 'package:elections_match/widgets/elections_item.dart';
 import 'package:elections_match/screens/elections_screen.dart';
 import 'package:elections_match/widgets/styles.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
