@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elections_match/models/data.dart';
 import 'package:elections_match/widgets/elections_item.dart';
 import 'package:elections_match/screens/elections_screen.dart';
@@ -57,6 +58,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
+  late FirebaseFirestore db;
+
+  _HomePageState() {
+    db = FirebaseFirestore.instance;
+    initiateDatabase();
+  }
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -91,6 +99,14 @@ class _HomePageState extends State<HomePage> {
 
   electionSelected(Elections elections) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => ElectionsScreen(elections)));
+  }
+
+  void initiateDatabase() async {
+    await db.collection('elections').get().then((event) {
+      for (var elections in event.docs) {
+        print('${elections.id} => ${elections.data()}');
+      }
+    });
   }
 
 }
