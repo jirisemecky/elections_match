@@ -7,7 +7,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'firebase_options.dart';
-import 'models/fake_data_model.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,7 +15,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  late DataModel dataModel;
+  late final DataModel dataModel;
 
   MyApp({super.key}) {
     // dataModel = FakeDataModel();
@@ -45,14 +44,23 @@ class HomePage extends StatefulWidget {
   final String title;
 
   @override
-  State<HomePage> createState() => _HomePageState(dataModel);
+  State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
   List<Elections>? data;
 
-  _HomePageState(DataModel dataModel) {
-    loadData(dataModel);
+  @override
+  void initState() {
+    super.initState();
+    loadData(widget.dataModel);
+  }
+
+  void loadData(DataModel dataModel) async {
+    var tempData = await dataModel.loadElections();
+    setState(() {
+      data = tempData;
+    });
   }
 
   @override
@@ -92,12 +100,5 @@ class _HomePageState extends State<HomePage> {
 
   electionSelected(Elections elections) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => ElectionsScreen(elections)));
-  }
-
-  void loadData(DataModel dataModel) async {
-    var tempData = await dataModel.loadElections();
-    setState(() {
-      data = tempData;
-    });
   }
 }
