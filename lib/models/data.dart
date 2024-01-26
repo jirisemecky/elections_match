@@ -26,7 +26,7 @@ class Elections {
         location = data['Location'];
 
   List<Party> getParties() {
-    // TODO: loading from database.
+    // kTODO: loading from database.
     return _parties ?? [];
   }
   List<Candidate> getCandidates() {
