@@ -1,18 +1,42 @@
 import 'dart:core';
 
+/// Model providing interface for fetching data.
+abstract class DataModel {
+  Future<List<Elections>> loadElections({String? tag});
+}
+
 class Elections {
-  String name;
-  String description;
-  List<Party> parties;
-  List<Candidate> candidates;
-  List<QuestionGroup> questionGroups;
+  final String id;
 
-  Elections(this.name, this.description, this.parties, this.candidates, this.questionGroups);
+  final String name;
+  final String description;
+  final String location;
 
-  String get id => name;
+  List<Party>? _parties;
+  List<Candidate>? _candidates;
+  List<QuestionGroup>? _questionGroups;
 
-  num get numberOfQuestions =>
-      questionGroups.map((g) => g.questions.length).reduce((value, element) => value + element);
+  Elections(this.name, this.description, this.location, this._parties, this._candidates,
+      this._questionGroups)
+      : id = name;
+
+  Elections.fromFirebase(this.id, Map<String, dynamic> data)
+      : name = data['Name'],
+        description = data['Description'],
+        location = data['Location'];
+
+  List<Party> getParties() {
+    // TODO: loading from database.
+    return _parties ?? [];
+  }
+  List<Candidate> getCandidates() {
+    // TODO: loading from database.
+    return _candidates ?? [];
+  }
+  List<QuestionGroup> getGroups() {
+    // TODO: loading from database.
+    return _questionGroups ?? [];
+  }
 }
 
 class Party {
@@ -56,7 +80,11 @@ class QuestionResponse {
   double? weight;
 
   QuestionResponse(this.response);
+
   QuestionResponse.withWeight(this.response, this.weight);
-  QuestionResponse.empty() : response = 0, weight = 1;
+
+  QuestionResponse.empty()
+      : response = 0,
+        weight = 1;
 
 }

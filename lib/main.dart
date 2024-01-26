@@ -1,10 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elections_match/models/data.dart';
-import 'package:elections_match/widgets/elections_item.dart';
 import 'package:elections_match/screens/elections_screen.dart';
+import 'package:elections_match/widgets/elections_item.dart';
 import 'package:elections_match/widgets/styles.dart';
-import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+
 import 'firebase_options.dart';
 import 'models/fake_data_model.dart';
 
@@ -58,11 +58,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  late FirebaseFirestore db;
+  late DataModel dataModel;
+  List<Elections> data = [];
 
   _HomePageState() {
-    db = FirebaseFirestore.instance;
-    initiateDatabase();
+    dataModel = FakeDataModel();
+    // dataModel = FirebaseDataModel();
+    loadData();
   }
 
   @override
@@ -79,7 +81,7 @@ class _HomePageState extends State<HomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: ListView.builder(itemCount: fakeElections.length, itemBuilder: itemBuilder)
+        child: ListView.builder(itemCount: data.length, itemBuilder: itemBuilder)
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
@@ -91,24 +93,20 @@ class _HomePageState extends State<HomePage> {
 
   Widget itemBuilder(BuildContext context, int index) {
     return GestureDetector(
-        onTap: () => electionSelected(fakeElections[index]),
+        onTap: () => electionSelected(data[index]),
         child: MouseRegion(
             cursor: SystemMouseCursors.click,
-            child: ElectionsListItem(fakeElections[index])));
+            child: ElectionsListItem(data[index])));
   }
 
   electionSelected(Elections elections) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => ElectionsScreen(elections)));
   }
 
-  void initiateDatabase() async {
-    await db.collection('elections').get().then((event) {
-      setState(() {
-        for (var elections in event.docs) {
-          print('${elections.id} => ${elections.data()}');
-        }
-      });
+  void loadData() async {
+    var tempData = await dataModel.loadElections();
+    setState(() {
+      data = tempData;
     });
   }
-
 }

@@ -19,7 +19,7 @@ class _MatchingScreenState extends State<MatchingScreen> with SingleTickerProvid
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: widget.elections.questionGroups.length, vsync: this);
+    _tabController = TabController(length: widget.elections.getGroups().length, vsync: this);
   }
 
   @override
@@ -43,14 +43,14 @@ class _MatchingScreenState extends State<MatchingScreen> with SingleTickerProvid
   TabBar buildTabBar() => TabBar(
         isScrollable: true,
         controller: _tabController,
-        tabs: [for (final g in widget.elections.questionGroups) Tab(text: g.name)],
+        tabs: [for (final g in widget.elections.getGroups()) Tab(text: g.name)],
       );
 
   TabBarView buildQuestionGroups(BuildContext context) {
     int i = 1;
     final children = <Widget>[];
-    for (final g in widget.elections.questionGroups) {
-      children.add(buildGroupWidget(context, g, i++, widget.elections.questionGroups.length));
+    for (final g in widget.elections.getGroups()) {
+      children.add(buildGroupWidget(context, g, i++, widget.elections.getGroups().length));
     }
     return TabBarView(controller: _tabController, children: children);
   }

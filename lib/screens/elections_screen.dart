@@ -19,7 +19,7 @@ class ElectionsScreen extends StatelessWidget {
     body: Column(
       children: [
         buildIntroSection(),
-        if (elections.parties.isNotEmpty) buildPartiesList(),
+        if (elections.getParties().isNotEmpty) buildPartiesList(),
         buildMatchingSection(context)
       ],
     ),
@@ -38,7 +38,7 @@ class ElectionsScreen extends StatelessWidget {
         ));
 
   Widget buildPartiesList() =>
-      Column(children: elections.parties.map((p) => PartyCard(p)).toList(),
+      Column(children: elections.getParties().map((p) => PartyCard(p)).toList(),
      );
 
 

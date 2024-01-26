@@ -28,8 +28,4 @@ class QuestionResults {
       responses.putIfAbsent(question.id, () => QuestionResponse.empty());
 
   bool get isSomethingAnswered => responses.isNotEmpty;
-
-  bool get isEverythingAnswered => responses.length >= elections.numberOfQuestions;
-
-  double get percentAnswered => 1.0 * responses.length / elections.numberOfQuestions;
 }
