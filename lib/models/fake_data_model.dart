@@ -75,6 +75,8 @@ class FakeDataModel implements DataModel {
     Candidate('Daleyza', 'Price', _nyParties[0])
   ];
 
+  static final Map<String, Party> allParties = { for (var party in _hawaiiParties + _czechParties + _nyParties) party.id : party};
+
   static final QuestionGroup welfare = QuestionGroup(' Welfare state & family', _welfareQuestions);
   static final QuestionGroup health = QuestionGroup('Health', _healthQuestions);
   static final QuestionGroup education = QuestionGroup('Education', _educationQuestions);
@@ -212,7 +214,7 @@ class FakeDataModel implements DataModel {
 
   static final List<Elections> _fakeElections = [
     Elections('Hawaii', 'Elections for parliament in Hawaii in Spring 2024', 'Hawaii',
-        _hawaiiParties, _hawaiiCandidates, [
+        _hawaiiParties.map((p) => p.id), _hawaiiCandidates, [
       welfare,
       health,
       education,
@@ -224,14 +226,25 @@ class FakeDataModel implements DataModel {
       natureAndConservation,
       democracyMediaAndDigitization
     ]),
-    Elections('Prague', 'Presidential elections in Czech', 'Czechia', _czechParties,
+    Elections('Prague', 'Presidential elections in Czech', 'Czechia', _czechParties.map((p) => p.id),
         _czechCandidates, [welfare, health, education, immigrationAndIntegration]),
-    Elections('New York', 'Voting of local policemen', 'NY', _nyParties, _nyCandidates,
+    Elections('New York', 'Voting of local policemen', 'NY', _nyParties.map((p) => p.id), _nyCandidates,
         [welfare, health, education]),
   ];
 
   @override
   Future<List<Elections>> loadElections({String? tag}) async {
     return _fakeElections;
+  }
+
+  @override
+  Future<List<Party>> loadParties(Elections elections) {
+    List<Party> parties = [];
+    elections.parties.forEach((partyId) {
+      if (allParties.containsKey(partyId)) {
+        parties.add(allParties[partyId]!);
+      }
+    });
+    return Future.value(parties);
   }
 }

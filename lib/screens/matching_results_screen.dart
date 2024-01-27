@@ -23,7 +23,7 @@ class MatchingResultsScreen extends StatelessWidget {
 
   List<Widget> buildCandidateMatches() {
     var partyMatches = <Widget>[];
-    for (final party in elections.getParties()) {
+    for (final party in [] /*elections.getParties()*/) {
       partyMatches.add(Row(
         children: [
           const Text(

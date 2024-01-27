@@ -22,4 +22,18 @@ class FirebaseDataModel extends DataModel {
       return electionsList;
     });
   }
+
+  @override
+  Future<List<Party>> loadParties(Elections elections) {
+    return db.collection('parties').where('id', whereIn: elections.parties).get()
+        .then((querySnapshot) {
+          print('Successfully fetched parties for elections ${elections.id}');
+          List<Party> parties = [];
+          for (var party in querySnapshot.docs) {
+            parties.add(Party.fromFirebase(party.id, party.data()));
+            print(party.data());
+          }
+          return parties;
+    });
+  }
 }

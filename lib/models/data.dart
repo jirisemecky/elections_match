@@ -3,6 +3,7 @@ import 'dart:core';
 /// Model providing interface for fetching data.
 abstract class DataModel {
   Future<List<Elections>> loadElections({String? tag});
+  Future<List<Party>> loadParties(Elections elections);
 }
 
 class Elections {
@@ -12,23 +13,21 @@ class Elections {
   final String description;
   final String location;
 
-  List<Party>? _parties;
+  Iterable<String> parties;
+
   List<Candidate>? _candidates;
   List<QuestionGroup>? _questionGroups;
 
-  Elections(this.name, this.description, this.location, this._parties, this._candidates,
+  Elections(this.name, this.description, this.location, this.parties, this._candidates,
       this._questionGroups)
       : id = name;
 
   Elections.fromFirebase(this.id, Map<String, dynamic> data)
       : name = data['Name'],
         description = data['Description'],
-        location = data['Location'];
+        location = data['Location'],
+        parties = data['parties'];
 
-  List<Party> getParties() {
-    // kTODO: loading from database.
-    return _parties ?? [];
-  }
   List<Candidate> getCandidates() {
     // TODO: loading from database.
     return _candidates ?? [];
@@ -40,9 +39,15 @@ class Elections {
 }
 
 class Party {
+  String id;
   String name;
+  String description;
 
-  Party(this.name);
+  Party(this.name) : id = name, description = 'Description of party $name';
+
+  Party.fromFirebase(this.id, Map<String, dynamic> data) :
+    name = data['name'],
+    description = data['description'];
 }
 
 class Candidate {
