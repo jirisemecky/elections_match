@@ -25,7 +25,9 @@ class FirebaseDataModel extends DataModel {
 
   @override
   Future<List<Party>> loadParties(Elections elections) {
-    return db.collection('parties').where('id', whereIn: elections.parties).get()
+    // Note that this will not work if there are more than 10 IDs.
+    // See discussion in https://github.com/firebase/flutterfire/discussions/9690.
+    return db.collection('parties').where(FieldPath.documentId, whereIn: elections.parties).get()
         .then((querySnapshot) {
           print('Successfully fetched parties for elections ${elections.id}');
           List<Party> parties = [];

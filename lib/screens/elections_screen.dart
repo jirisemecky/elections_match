@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:elections_match/models/data.dart';
 import 'package:elections_match/screens/matching_screen.dart';
 import 'package:elections_match/widgets/party_card.dart';
@@ -38,7 +36,7 @@ class _ElectionScreenState extends State<ElectionsScreen> {
     }
 
     if (partiesData!.isEmpty) {
-      return Text('No parties registered.');
+      return const Text("No parties registered.");
     }
 
     return Column(children: partiesData!.map((p) => PartyCard(p)).toList());

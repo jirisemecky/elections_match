@@ -13,7 +13,7 @@ class Elections {
   final String description;
   final String location;
 
-  Iterable<String> parties;
+  Iterable<dynamic> parties;
 
   List<Candidate>? _candidates;
   List<QuestionGroup>? _questionGroups;
