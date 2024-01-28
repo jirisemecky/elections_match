@@ -26,9 +26,10 @@ class FirebaseDataModel extends DataModel {
   // See discussion in https://github.com/firebase/flutterfire/discussions/9690.
   @override
   Future<List<Party>> loadParties(Elections elections) {
-    return partiesRef
-        .where(FieldPath.documentId, whereIn: elections.parties)
-        .get()
+    return electionsRef.doc(elections.id).collection('parties').withConverter(
+        fromFirestore: (snapshot, _) => Party.fromFirestore(snapshot.id, snapshot.data()!),
+        toFirestore: (party, _) => party.toFirestore())
+    .get()
         .then((querySnapshot) => querySnapshot.docs.map((partyRef) => partyRef.data()).toList());
   }
 }

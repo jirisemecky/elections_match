@@ -57,7 +57,7 @@ class Party {
 
   Party.fromFirestore(this.id, Map<String, dynamic> data)
       : name = data['name'],
-        description = data['description'];
+        description = data['description'] ?? '';
 
   Map<String, Object?> toFirestore() => {'name': name, 'description': description};
 }
