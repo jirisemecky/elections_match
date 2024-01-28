@@ -1,8 +1,11 @@
 import 'dart:core';
 
+import 'package:elections_match/models/fake_data_model.dart';
+
 /// Model providing interface for fetching data.
 abstract class DataModel {
   Future<List<Elections>> loadElections({String? tag});
+
   Future<List<Party>> loadParties(Elections elections);
 }
 
@@ -22,16 +25,21 @@ class Elections {
       this._questionGroups)
       : id = name;
 
-  Elections.fromFirebase(this.id, Map<String, dynamic> data)
+  Elections.fromFirestore(this.id, Map<String, dynamic> data)
       : name = data['Name'],
         description = data['Description'],
         location = data['Location'],
-        parties = data['parties'];
+        parties = data['parties'],
+        _questionGroups = FakeDataModel.hawaiiGroups;
+
+  Map<String, Object?> toFirestore() =>
+      {'Name': name, 'Description': description, 'Location': location, 'parties': parties};
 
   List<Candidate> getCandidates() {
     // TODO: loading from database.
     return _candidates ?? [];
   }
+
   List<QuestionGroup> getGroups() {
     // TODO: loading from database.
     return _questionGroups ?? [];
@@ -43,11 +51,15 @@ class Party {
   String name;
   String description;
 
-  Party(this.name) : id = name, description = 'Description of party $name';
+  Party(this.name)
+      : id = name,
+        description = 'Description of party $name';
 
-  Party.fromFirebase(this.id, Map<String, dynamic> data) :
-    name = data['name'],
-    description = data['description'];
+  Party.fromFirestore(this.id, Map<String, dynamic> data)
+      : name = data['name'],
+        description = data['description'];
+
+  Map<String, Object?> toFirestore() => {'name': name, 'description': description};
 }
 
 class Candidate {
@@ -58,25 +70,28 @@ class Candidate {
   Candidate(this.firstName, this.sureName, this.party);
 }
 
-enum QuestionType {
-  agreement,
-}
-
 class QuestionGroup {
   String name;
   List<Question> questions;
 
   QuestionGroup(this.name, this.questions);
+
+  QuestionGroup.fromFirestore(Map<String, dynamic> data)
+      : name = data['name'],
+        questions = data['questions'];
+
+  Map<String, Object?> toFirestore() => {'name': name, 'questions': questions};
 }
 
 class Question {
   String id;
   String text;
-  QuestionType type;
 
-  Question(this.text)
-      : type = QuestionType.agreement,
-        id = text.hashCode.toString();
+  Question(this.text) : id = text.hashCode.toString();
+
+  Question.fromFirestore(this.id, Map<String, dynamic> data) : text = data['text'];
+
+  Map<String, Object?> toFirestore() => {'text': text};
 }
 
 /// Representation of response from a candidate or a user to a question.
@@ -92,4 +107,9 @@ class QuestionResponse {
       : response = 0,
         weight = 1;
 
+  QuestionResponse.fromFirestore(Map<String, dynamic> data)
+      : response = data['response'],
+        weight = data['weight'];
+
+  Map<String, Object?> toFirestore() => {'response': response, 'weight': weight};
 }

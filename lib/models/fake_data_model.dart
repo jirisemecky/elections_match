@@ -75,7 +75,9 @@ class FakeDataModel implements DataModel {
     Candidate('Daleyza', 'Price', _nyParties[0])
   ];
 
-  static final Map<String, Party> allParties = { for (var party in _hawaiiParties + _czechParties + _nyParties) party.id : party};
+  static final Map<String, Party> allParties = {
+    for (var party in _hawaiiParties + _czechParties + _nyParties) party.id: party
+  };
 
   static final QuestionGroup welfare = QuestionGroup(' Welfare state & family', _welfareQuestions);
   static final QuestionGroup health = QuestionGroup('Health', _healthQuestions);
@@ -212,24 +214,31 @@ class FakeDataModel implements DataModel {
         'Should it be possible to hold a referendum on federal spending above a certain amount (optional financial referendum)?'),
   ];
 
+  static final hawaiiGroups = [
+    welfare,
+    health,
+    education,
+    immigrationAndIntegration,
+    societyAndEthics,
+    financesAndTaxes,
+    economyAndLabour,
+    energyAndTransport,
+    natureAndConservation,
+    democracyMediaAndDigitization
+  ];
+
   static final List<Elections> _fakeElections = [
     Elections('Hawaii', 'Elections for parliament in Hawaii in Spring 2024', 'Hawaii',
-        _hawaiiParties.map((p) => p.id), _hawaiiCandidates, [
-      welfare,
-      health,
-      education,
-      immigrationAndIntegration,
-      societyAndEthics,
-      financesAndTaxes,
-      economyAndLabour,
-      energyAndTransport,
-      natureAndConservation,
-      democracyMediaAndDigitization
-    ]),
-    Elections('Prague', 'Presidential elections in Czech', 'Czechia', _czechParties.map((p) => p.id),
-        _czechCandidates, [welfare, health, education, immigrationAndIntegration]),
-    Elections('New York', 'Voting of local policemen', 'NY', _nyParties.map((p) => p.id), _nyCandidates,
-        [welfare, health, education]),
+        _hawaiiParties.map((p) => p.id), _hawaiiCandidates, hawaiiGroups),
+    Elections(
+        'Prague',
+        'Presidential elections in Czech',
+        'Czechia',
+        _czechParties.map((p) => p.id),
+        _czechCandidates,
+        [welfare, health, education, immigrationAndIntegration]),
+    Elections('New York', 'Voting of local policemen', 'NY', _nyParties.map((p) => p.id),
+        _nyCandidates, [welfare, health, education]),
   ];
 
   @override
