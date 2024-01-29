@@ -1,16 +1,18 @@
 import 'package:elections_match/models/data.dart';
+import 'package:elections_match/models/firebase_data_model.dart';
 import 'package:elections_match/screens/matching_results_screen.dart';
 import 'package:elections_match/widgets/question_selector.dart';
 import 'package:elections_match/widgets/styles.dart';
 import 'package:flutter/material.dart';
 
 class MatchingScreen extends StatefulWidget {
+  final DataModel dataModel;
   final Elections elections;
 
   @override
   State<MatchingScreen> createState() => _MatchingScreenState();
 
-  const MatchingScreen(this.elections, {super.key});
+  const MatchingScreen(this.dataModel, this.elections, {super.key});
 }
 
 class _MatchingScreenState extends State<MatchingScreen> with SingleTickerProviderStateMixin {
@@ -20,6 +22,7 @@ class _MatchingScreenState extends State<MatchingScreen> with SingleTickerProvid
   void initState() {
     super.initState();
     _tabController = TabController(length: widget.elections.getGroups().length, vsync: this);
+    var model = FirebaseDataModel().saveQuestionsGroups(widget.elections);
   }
 
   @override

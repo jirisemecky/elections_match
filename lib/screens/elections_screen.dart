@@ -24,7 +24,11 @@ class _ElectionScreenState extends State<ElectionsScreen> {
           backgroundColor: appBarBackgroundColor(context),
           title: Text('Elections ${widget.elections.name}')),
       body: Column(
-        children: [buildIntroSection(), buildPartyList(), buildMatchingSection(context)],
+        children: [
+          buildIntroSection(),
+          buildPartyList(),
+          buildMatchingSection(context)
+        ],
       ),
     );
   }
@@ -67,6 +71,6 @@ class _ElectionScreenState extends State<ElectionsScreen> {
 
   runElectionMatching(BuildContext context) {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => MatchingScreen(widget.elections)));
+        context, MaterialPageRoute(builder: (context) => MatchingScreen(widget.dataModel, widget.elections)));
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elections_match/models/data.dart';
 
@@ -7,7 +9,16 @@ class FirebaseDataModel extends DataModel {
   late CollectionReference<Elections> electionsRef;
   late CollectionReference<Party> partiesRef;
 
-  FirebaseDataModel() {
+  static FirebaseDataModel? _singleton;
+  factory FirebaseDataModel() {
+    _singleton ??= FirebaseDataModel._internal();
+    return _singleton!;
+  }
+
+  /// The actual implementation of the constructor.
+  ///
+  /// This is internal only to prevent double instantiation.
+  FirebaseDataModel._internal() {
     db = FirebaseFirestore.instance;
     electionsRef = db.collection('elections').withConverter(
         fromFirestore: (snapshot, _) => Elections.fromFirestore(snapshot.id, snapshot.data()!),
@@ -31,5 +42,12 @@ class FirebaseDataModel extends DataModel {
         toFirestore: (party, _) => party.toFirestore())
     .get()
         .then((querySnapshot) => querySnapshot.docs.map((partyRef) => partyRef.data()).toList());
+  }
+
+  saveQuestionsGroups(Elections elections) {
+    var collection = electionsRef.doc(elections.id).collection('groups').withConverter(
+        fromFirestore: (snapshot, _) => QuestionGroup.fromFirestore(snapshot.data()!),
+        toFirestore: (group, _) => group.toFirestore())
+    .add(elections.getGroups()[0]).then((value) => print(value));
   }
 }
