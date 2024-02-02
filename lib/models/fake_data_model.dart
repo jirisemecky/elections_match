@@ -229,7 +229,7 @@ class FakeDataModel implements DataModel {
 
   static final List<Elections> _fakeElections = [
     Elections('Hawaii', 'Elections for parliament in Hawaii in Spring 2024', 'Hawaii',
-        _hawaiiParties.map((p) => p.id), _hawaiiCandidates, hawaiiGroups),
+        _hawaiiParties.map((p) => p.id), _hawaiiCandidates, getHawaiiGroups()),
     Elections(
         'Prague',
         'Presidential elections in Czech',
@@ -244,6 +244,14 @@ class FakeDataModel implements DataModel {
   @override
   Future<List<Elections>> loadElections({String? tag}) async {
     return _fakeElections;
+  }
+
+  static List<QuestionGroup> getHawaiiGroups() {
+    hawaiiGroups.forEach((g) => g.orderQuestions());
+    for (var i = 0; i < hawaiiGroups.length; i++) {
+      hawaiiGroups[i].order = 10 * (i + 1);
+    }
+    return hawaiiGroups;
   }
 
   @override

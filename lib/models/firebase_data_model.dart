@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elections_match/models/data.dart';
 
@@ -44,10 +42,20 @@ class FirebaseDataModel extends DataModel {
         .then((querySnapshot) => querySnapshot.docs.map((partyRef) => partyRef.data()).toList());
   }
 
-  saveQuestionsGroups(Elections elections) {
-    var collection = electionsRef.doc(elections.id).collection('groups').withConverter(
-        fromFirestore: (snapshot, _) => QuestionGroup.fromFirestore(snapshot.data()!),
-        toFirestore: (group, _) => group.toFirestore())
-    .add(elections.getGroups()[0]).then((value) => print(value));
+  /// This should be only ad hoc to import fake data into real storage.
+  void saveCurrentQuestionsGroupsToFirebase_DumpOnly(Elections elections) async {
+    for (var group in elections.getGroups()) {
+      var groupCollection = await electionsRef.doc(elections.id).collection('groups').withConverter(
+          fromFirestore: (snapshot, _) => QuestionGroup.fromFirestore(snapshot.data()!),
+          toFirestore: (group, _) => group.toFirestore());
+      var groupRef = await groupCollection.add(group);
+
+      for (var question in group.questions) {
+        var questionCollection = groupRef.collection('questions').withConverter(
+            fromFirestore: (snapshot, _) => Question.fromFirestore(snapshot.id, snapshot.data()!),
+            toFirestore: (question, _) => question.toFirestore());
+        await questionCollection.add(question);
+      }
+    }
   }
 }

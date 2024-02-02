@@ -1,7 +1,5 @@
 import 'dart:core';
 
-import 'package:elections_match/models/fake_data_model.dart';
-
 /// Model providing interface for fetching data.
 abstract class DataModel {
   Future<List<Elections>> loadElections({String? tag});
@@ -29,8 +27,7 @@ class Elections {
       : name = data['Name'],
         description = data['Description'],
         location = data['Location'],
-        parties = data['parties'],
-        _questionGroups = FakeDataModel.hawaiiGroups;
+        parties = data['parties'];
 
   Map<String, Object?> toFirestore() =>
       {'Name': name, 'Description': description, 'Location': location, 'parties': parties};
@@ -72,26 +69,35 @@ class Candidate {
 
 class QuestionGroup {
   String name;
+  num? order;
   List<Question> questions;
 
   QuestionGroup(this.name, this.questions);
 
+  void orderQuestions() {
+    for (var i = 0; i < questions.length; i++) {
+      questions[i].order = 10 * (i + 1);
+    }
+  }
+
   QuestionGroup.fromFirestore(Map<String, dynamic> data)
       : name = data['name'],
+        order = data['order'],
         questions = data['questions'];
 
-  Map<String, Object?> toFirestore() => {'name': name, 'questions': questions};
+  Map<String, Object?> toFirestore() => {'order': order, 'name': name};
 }
 
 class Question {
   String id;
+  num? order;
   String text;
 
   Question(this.text) : id = text.hashCode.toString();
 
-  Question.fromFirestore(this.id, Map<String, dynamic> data) : text = data['text'];
+  Question.fromFirestore(this.id, Map<String, dynamic> data) : order = data['order'], text = data['text'];
 
-  Map<String, Object?> toFirestore() => {'text': text};
+  Map<String, Object?> toFirestore() => {'order': order, 'text': text};
 }
 
 /// Representation of response from a candidate or a user to a question.

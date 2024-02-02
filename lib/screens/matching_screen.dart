@@ -1,5 +1,4 @@
 import 'package:elections_match/models/data.dart';
-import 'package:elections_match/models/firebase_data_model.dart';
 import 'package:elections_match/screens/matching_results_screen.dart';
 import 'package:elections_match/widgets/question_selector.dart';
 import 'package:elections_match/widgets/styles.dart';
@@ -22,7 +21,6 @@ class _MatchingScreenState extends State<MatchingScreen> with SingleTickerProvid
   void initState() {
     super.initState();
     _tabController = TabController(length: widget.elections.getGroups().length, vsync: this);
-    var model = FirebaseDataModel().saveQuestionsGroups(widget.elections);
   }
 
   @override
