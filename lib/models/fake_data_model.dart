@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'data.dart';
 
 class FakeDataModel implements DataModel {
@@ -263,5 +265,23 @@ class FakeDataModel implements DataModel {
       }
     });
     return Future.value(parties);
+  }
+
+  /// This should be only ad hoc to import fake data into real storage.
+  static void saveCurrentQuestionsGroupsToFirebase_DumpOnly(
+      CollectionReference<Elections> electionsRef, Elections elections) async {
+    for (var group in elections.getGroups()) {
+      var groupCollection = await electionsRef.doc(elections.id).collection('groups').withConverter(
+          fromFirestore: (snapshot, _) => QuestionGroup.fromFirestore(snapshot.data()!),
+          toFirestore: (group, _) => group.toFirestore());
+      var groupRef = await groupCollection.add(group);
+
+      for (var question in group.questions) {
+        var questionCollection = groupRef.collection('questions').withConverter(
+            fromFirestore: (snapshot, _) => Question.fromFirestore(snapshot.id, snapshot.data()!),
+            toFirestore: (question, _) => question.toFirestore());
+        await questionCollection.add(question);
+      }
+    }
   }
 }
