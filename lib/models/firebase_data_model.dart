@@ -8,6 +8,7 @@ class FirebaseDataModel extends DataModel {
   late CollectionReference<Party> partiesRef;
 
   static FirebaseDataModel? _singleton;
+
   factory FirebaseDataModel() {
     _singleton ??= FirebaseDataModel._internal();
     return _singleton!;
@@ -35,10 +36,33 @@ class FirebaseDataModel extends DataModel {
   // See discussion in https://github.com/firebase/flutterfire/discussions/9690.
   @override
   Future<List<Party>> loadParties(Elections elections) {
-    return electionsRef.doc(elections.id).collection('parties').withConverter(
-        fromFirestore: (snapshot, _) => Party.fromFirestore(snapshot.id, snapshot.data()!),
-        toFirestore: (party, _) => party.toFirestore())
-    .get()
+    return electionsRef
+        .doc(elections.id)
+        .collection('parties')
+        .withConverter(
+            fromFirestore: (snapshot, _) => Party.fromFirestore(snapshot.id, snapshot.data()!),
+            toFirestore: (party, _) => party.toFirestore())
+        .get()
         .then((querySnapshot) => querySnapshot.docs.map((partyRef) => partyRef.data()).toList());
+  }
+
+  @override
+  Future<List<QuestionGroup>> loadGroups(Elections elections) {
+    var collectionRef = electionsRef.doc(elections.id).collection('groups').withConverter(
+        fromFirestore: (snapshot, _) => QuestionGroup.fromFirestore(snapshot),
+        toFirestore: (group, _) => group.toFirestore());
+    return collectionRef
+        .get()
+        .then((querySnapshot) => querySnapshot.docs.map((groupRef) => groupRef.data()).toList());
+  }
+
+  @override
+  Future<List<Question>> loadQuestions(Elections elections, QuestionGroup group) {
+    var collectionRef = electionsRef.doc(elections.id).collection('groups').doc(group.id).collection('questions').withConverter(
+        fromFirestore: (snapshot, _) => Question.fromFirestore(snapshot),
+        toFirestore: (question, _) => question.toFirestore());
+    return collectionRef
+        .get()
+        .then((querySnapshot) => querySnapshot.docs.map((questionRef) => questionRef.data()).toList());
   }
 }

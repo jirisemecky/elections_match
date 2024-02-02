@@ -267,18 +267,26 @@ class FakeDataModel implements DataModel {
     return Future.value(parties);
   }
 
+  @override
+  Future<List<QuestionGroup>> loadGroups(Elections elections) =>
+      throw 'This should never be called, groups should already be pre-loaded';
+
+  @override
+  Future<List<Question>> loadQuestions(Elections elections, QuestionGroup group) =>
+      throw 'This should never be called, questions should already be pre-loaded';
+
   /// This should be only ad hoc to import fake data into real storage.
   static void saveCurrentQuestionsGroupsToFirebase_DumpOnly(
       CollectionReference<Elections> electionsRef, Elections elections) async {
-    for (var group in elections.getGroups()) {
+    for (var group in await elections.getGroups(FakeDataModel())) {
       var groupCollection = await electionsRef.doc(elections.id).collection('groups').withConverter(
-          fromFirestore: (snapshot, _) => QuestionGroup.fromFirestore(snapshot.data()!),
+          fromFirestore: (snapshot, _) => QuestionGroup.fromFirestore(snapshot),
           toFirestore: (group, _) => group.toFirestore());
       var groupRef = await groupCollection.add(group);
 
-      for (var question in group.questions) {
+      for (var question in group.questions!) {
         var questionCollection = groupRef.collection('questions').withConverter(
-            fromFirestore: (snapshot, _) => Question.fromFirestore(snapshot.id, snapshot.data()!),
+            fromFirestore: (snapshot, _) => Question.fromFirestore(snapshot),
             toFirestore: (question, _) => question.toFirestore());
         await questionCollection.add(question);
       }

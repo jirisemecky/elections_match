@@ -1,10 +1,16 @@
 import 'dart:core';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 /// Model providing interface for fetching data.
 abstract class DataModel {
   Future<List<Elections>> loadElections({String? tag});
 
   Future<List<Party>> loadParties(Elections elections);
+
+  Future<List<QuestionGroup>> loadGroups(Elections elections);
+
+  Future<List<Question>> loadQuestions(Elections elections, QuestionGroup group);
 }
 
 class Elections {
@@ -37,9 +43,11 @@ class Elections {
     return _candidates ?? [];
   }
 
-  List<QuestionGroup> getGroups() {
-    // TODO: loading from database.
-    return _questionGroups ?? [];
+  Future<List<QuestionGroup>> getGroups(DataModel dataModel) async {
+    if (_questionGroups != null) {
+      return Future.value(_questionGroups);
+    }
+    return dataModel.loadGroups(this);
   }
 }
 
@@ -68,22 +76,33 @@ class Candidate {
 }
 
 class QuestionGroup {
+  String id;
+
   String name;
   num? order;
-  List<Question> questions;
+  List<Question>? _questions;
 
-  QuestionGroup(this.name, this.questions);
+  QuestionGroup(this.name, this._questions) : id = name;
 
   void orderQuestions() {
-    for (var i = 0; i < questions.length; i++) {
-      questions[i].order = 10 * (i + 1);
+    if (_questions != null) {
+      for (var i = 0; i < _questions!.length; i++) {
+        _questions![i].order = 10 * (i + 1);
+      }
     }
   }
 
-  QuestionGroup.fromFirestore(Map<String, dynamic> data)
-      : name = data['name'],
-        order = data['order'],
-        questions = data['questions'];
+  Future<List<Question>> getQuestions(DataModel dataModel, Elections elections) async {
+    if (_questions != null) {
+      return Future.value(_questions);
+    }
+    return dataModel.loadQuestions(elections, this);
+  }
+
+  QuestionGroup.fromFirestore(DocumentSnapshot<Map<String, dynamic>> snapshot)
+      : id = snapshot.id,
+        name = snapshot.data()!['name'],
+        order = snapshot.data()!['order'];
 
   Map<String, Object?> toFirestore() => {'order': order, 'name': name};
 }
@@ -95,7 +114,10 @@ class Question {
 
   Question(this.text) : id = text.hashCode.toString();
 
-  Question.fromFirestore(this.id, Map<String, dynamic> data) : order = data['order'], text = data['text'];
+  Question.fromFirestore(DocumentSnapshot<Map<String, dynamic>> snapshot)
+      : id = snapshot.id,
+        order = snapshot.data()!['order'],
+        text = snapshot.data()!['text'];
 
   Map<String, Object?> toFirestore() => {'order': order, 'text': text};
 }

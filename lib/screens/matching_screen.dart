@@ -16,11 +16,20 @@ class MatchingScreen extends StatefulWidget {
 
 class _MatchingScreenState extends State<MatchingScreen> with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  List<QuestionGroup>? groups;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: widget.elections.getGroups().length, vsync: this);
+    loadData();
+    _tabController = TabController(length: groups?.length ?? 0, vsync: this);
+  }
+
+  void loadData() async {
+    widget.elections.getGroups(widget.dataModel).then((value) =>
+        setState(() {
+          groups = value;
+        }));
   }
 
   @override
@@ -44,14 +53,14 @@ class _MatchingScreenState extends State<MatchingScreen> with SingleTickerProvid
   TabBar buildTabBar() => TabBar(
         isScrollable: true,
         controller: _tabController,
-        tabs: [for (final g in widget.elections.getGroups()) Tab(text: g.name)],
+        tabs: [for (final g in groups ?? []) Tab(text: g.name)],
       );
 
   TabBarView buildQuestionGroups(BuildContext context) {
     int i = 1;
     final children = <Widget>[];
-    for (final g in widget.elections.getGroups()) {
-      children.add(buildGroupWidget(context, g, i++, widget.elections.getGroups().length));
+    for (final g in groups ?? []) {
+      children.add(buildGroupWidget(context, g, i++, groups?.length ?? 0));
     }
     return TabBarView(controller: _tabController, children: children);
   }
@@ -59,7 +68,7 @@ class _MatchingScreenState extends State<MatchingScreen> with SingleTickerProvid
   buildGroupWidget(BuildContext context, QuestionGroup group, int index, int numberOfGroups) {
     var questionWidgets = <Widget>[];
     int i = 1;
-    for (final question in group.questions) {
+    for (final question in group.getQuestions(widget.dataModel, widget.elections) ?? []) {
       questionWidgets.add(QuestionSelector(widget.elections, question, i++));
     }
 
