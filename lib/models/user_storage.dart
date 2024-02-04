@@ -1,6 +1,7 @@
 import 'package:elections_match/models/data.dart';
+import 'package:elections_match/models/fake_data_model.dart';
 
-/// Local user storage before pemanency is solved.
+/// Local user storage before permanency is solved.
 final UserStorage _userStorage = UserStorage();
 
 UserStorage getUserStorage() => _userStorage;
@@ -14,7 +15,7 @@ class UserStorage {
   Map<String, QuestionResults> filledElections = {};
 
   QuestionResults getElections(Elections elections) =>
-      filledElections.putIfAbsent(elections.id, () => QuestionResults(elections));
+      filledElections.putIfAbsent(elections.name, () => QuestionResults(elections));
 }
 
 class QuestionResults {
@@ -25,7 +26,7 @@ class QuestionResults {
   QuestionResults(this.elections);
 
   QuestionResponse getQuestion(Question question) =>
-      responses.putIfAbsent(question.id, () => QuestionResponse.empty());
+      responses.putIfAbsent(question.text, () => FakeQuestionResponse.empty());
 
   bool get isSomethingAnswered => responses.isNotEmpty;
 }

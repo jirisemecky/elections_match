@@ -35,7 +35,7 @@ class _ElectionScreenState extends State<ElectionsScreen> {
 
   Widget buildPartyList() {
     if (partiesData == null) {
-      widget.dataModel.loadParties(widget.elections).then(partiesLoaded);
+      widget.elections.getParties().then(partiesLoaded);
       return const LinearProgressIndicator();
     }
 

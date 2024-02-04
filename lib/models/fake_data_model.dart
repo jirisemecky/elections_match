@@ -1,295 +1,127 @@
+import 'dart:html';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:elections_match/models/fake_data_definition.dart';
 
 import 'data.dart';
 
 class FakeDataModel implements DataModel {
-  static final List<Party> _hawaiiParties = [
-    Party('The leftmost party'),
-    Party('Beachboys'),
-    Party('Bikini for the World'),
-    Party('Surfers to the islands'),
-  ];
 
-  static final List<Candidate> _hawaiiCandidates = [
-    Candidate('Amoura', 'Lopez', _hawaiiParties[0]),
-    Candidate('Michael', 'Murray', _hawaiiParties[0]),
-    Candidate('Faith', 'Alfaro', _hawaiiParties[0]),
-    Candidate('Xzavier', 'Garrison', _hawaiiParties[0]),
-    Candidate('Cadence', 'Wong', _hawaiiParties[1]),
-    Candidate('Walter', 'Santos', _hawaiiParties[1]),
-    Candidate('Alana', 'Newman', _hawaiiParties[1]),
-    Candidate('Anderson', 'Portillo', _hawaiiParties[2]),
-    Candidate('Nathalie', 'Andrade', _hawaiiParties[2]),
-    Candidate('Abdiel', 'Freeman', _hawaiiParties[2]),
-    Candidate('Norah', 'Arellano', _hawaiiParties[2]),
-    Candidate('Kellan', 'Peck', _hawaiiParties[2]),
-    Candidate('Crystal', 'Kent', _hawaiiParties[3]),
-    Candidate('Mekhi', 'Tran', _hawaiiParties[3]),
-    Candidate('Kylie', 'Little', _hawaiiParties[3]),
-    Candidate('Lennox', 'Warner', _hawaiiParties[3]),
-  ];
+  final FakeDataDefinition data;
 
-  static final List<Party> _czechParties = [
-    Party('ODS'),
-    Party('Starostové a nezávislí'),
-    Party('Piráti'),
-    Party('ANO'),
-    Party('Komouši'),
-    Party('KDU/CSL'),
-    Party('Socani'),
-  ];
-
-  static final List<Candidate> _czechCandidates = [
-    Candidate('Jozef', 'Kliment', _czechParties[0]),
-    Candidate('Petra', 'Cibulková', _czechParties[0]),
-    Candidate('Božena', 'Šišková', _czechParties[0]),
-    Candidate('Romana', 'Bečvářová', _czechParties[0]),
-    Candidate('Emil', 'Šafář', _czechParties[1]),
-    Candidate('Jindřiška', 'Vojáčková', _czechParties[1]),
-    Candidate('Nikola', 'Čiháková', _czechParties[1]),
-    Candidate('Iveta', 'Řeháčková', _czechParties[2]),
-    Candidate('Viktor', 'Gabriel', _czechParties[2]),
-    Candidate('Vojtěch', 'Suchánek', _czechParties[3]),
-    Candidate('Adam', 'Bartošek', _czechParties[3]),
-    Candidate('Marie', 'Kurková', _czechParties[3]),
-    Candidate('Miluše', 'Čápová', _czechParties[3]),
-    Candidate('Simona', 'Zemanová', _czechParties[3]),
-    Candidate('Zdenka', 'Holubová', _czechParties[3]),
-    Candidate('Renata', 'Veselá', _czechParties[4]),
-    Candidate('Libor', 'Medek', _czechParties[4]),
-    Candidate('Andrea', 'Smutná', _czechParties[5]),
-    Candidate('Marie', 'Janatová', _czechParties[6]),
-    Candidate('Dominika', 'Semerádová', _czechParties[6]),
-  ];
-
-  static final List<Party> _nyParties = [Party('Good cop'), Party('Bad cop')];
-
-  static final List<Candidate> _nyCandidates = [
-    Candidate('Camilla', 'Thomas', _nyParties[0]),
-    Candidate('Brynlee', 'Hughes', _nyParties[0]),
-    Candidate('Michael', 'Hamilton', _nyParties[0]),
-    Candidate('Elena', 'Porter', _nyParties[0]),
-    Candidate('Weston', 'Hale', _nyParties[0]),
-    Candidate('Emmett', 'Butler', _nyParties[0]),
-    Candidate('Hudson', 'Hammond', _nyParties[0]),
-    Candidate('Anaya', 'Fuller', _nyParties[0]),
-    Candidate('Remington', 'Berry', _nyParties[0]),
-    Candidate('Daleyza', 'Price', _nyParties[0])
-  ];
-
-  static final Map<String, Party> allParties = {
-    for (var party in _hawaiiParties + _czechParties + _nyParties) party.id: party
-  };
-
-  static final QuestionGroup welfare = QuestionGroup(' Welfare state & family', _welfareQuestions);
-  static final QuestionGroup health = QuestionGroup('Health', _healthQuestions);
-  static final QuestionGroup education = QuestionGroup('Education', _educationQuestions);
-  static final QuestionGroup immigrationAndIntegration =
-      QuestionGroup('Immigration and Integration', _immigrationAndIntegrationQuestions);
-  static final QuestionGroup societyAndEthics =
-      QuestionGroup('Society and Ethics', _societyAndEthicsQuestions);
-  static final QuestionGroup financesAndTaxes =
-      QuestionGroup('Finances and Taxes', _financesAndTaxesQuestions);
-  static final QuestionGroup economyAndLabour =
-      QuestionGroup('Economy and Labour', _economyAndLabourQuestions);
-  static final QuestionGroup energyAndTransport =
-      QuestionGroup('Energy and Transport', _energyAndTransportQuestions);
-  static final QuestionGroup natureAndConservation =
-      QuestionGroup('Mature and Conservation', _natureAndConservationQuestions);
-  static final QuestionGroup democracyMediaAndDigitization =
-      QuestionGroup('Democracy, Media and Digitization', _democracyMediaAndDigitizationQuestions);
-
-  static final List<Question> _welfareQuestions = [
-    Question('Do you support an increase in the retirement age (e.g., to 67)?'),
-    Question(
-        'Should the federal government allocate more funding for health insurance premium subsidies'),
-    Question(
-        'For married couples, the pension is currently limited to 150% of the maximum individual AHV pension (capping). Should this limit be eliminated?'),
-    Question('Should paid parental leave be increased beyond today'
-        's 14 weeks of maternity leave and two weeks of paternity leave?'),
-    Question(
-        'Should the federal government provide more financial support for public housing construction?'),
-  ];
-
-  static final List<Question> _healthQuestions = [
-    Question(
-        'Should compulsory vaccination of children be introduced based on the Swiss vaccination plan?'),
-    Question(
-        'Are you in favor of the introduction of a tax on foods containing sugar (sugar tax)?'),
-    Question(
-        'Should insured persons contribute more to health care costs (e.g., increase the minimum deductible)?'),
-    Question('Should the Federal Council'
-        's ability to restrict private and economic life in the event of a pandemic be more limited?'),
-    Question(
-        'Should the federal government be given the authority to determine the hospital offering (national hospital planning with regard to locations and range of services)?'),
-  ];
-
-  static final List<Question> _educationQuestions = [
-    Question(
-        'According to the Swiss integrated schooling concept, children with learning difficulties or disabilities should be taught in regular classes. Do you approve of this concept?'),
-    Question('Should the federal government raise the requirements for the gymnasiale matura?'),
-    Question(
-        'Should the state be more committed to equal educational opportunities (e.g., through subsidized remedial courses for students from low-income families)?'),
-  ];
-
-  static final List<Question> _immigrationAndIntegrationQuestions = [
-    Question(
-        'Should the conditions for naturalization be relaxed (e.g., shorter ￼residence period)?'),
-    Question(
-        'Should more qualified workers from non-EU/EFTA countries be allowed to work in Switzerland (increase ￼third-country quota)?'),
-    Question(
-        'Do you support efforts to house asylum seekers in centers outside Europe during the asylum procedure?'),
-    Question(
-        'Should foreign nationals who have lived in Switzerland for at least ten years be granted the right to vote and stand for election at the municipal level?'),
-  ];
-
-  static final List<Question> _societyAndEthicsQuestions = [
-    Question('Should cannabis use be legalized?'),
-    Question(
-        'Would you be in favour of doctors being allowed to administer direct active euthanasia in Switzerland?'),
-    Question('Should a third official gender be introduced alongside "female" and "male"?'),
-    Question('Do you think it'
-        's right for same-sex couples to have the same rights as heterosexual couples in all areas?'),
-  ];
-
-  static final List<Question> _financesAndTaxesQuestions = [
-    Question('Do you support tax cuts at the federal level over the next four years?'),
-    Question('Should married couples be taxed separately (individual taxation)?'),
-    Question(
-        'Would you support the introduction of a national inheritance tax on all inheritances over one million Swiss francs?'),
-    Question(
-        'Should the differences between cantons with high and low financial capacity be further reduced through ￼fiscal equalization?'),
-  ];
-
-  static final List<Question> _economyAndLabourQuestions = [
-    Question(
-        'Are you in favor of introducing a ￼minimum wage of CHF 4,000 for all full-time employees?'),
-    Question(
-        'Do you support stricter regulations for the financial sector (e.g., stricter ￼capital requirements for banks, ban on bonuses)?'),
-    Question(
-        'Should private households be free to choose their electricity supplier (complete ￼liberalization of the electricity market)?'),
-    Question(
-        'Should housing construction regulations be relaxed (e.g., noise protection, ￼occupancy rates)?'),
-    Question('Are you in favor of stricter controls on equal pay for women and men?'),
-  ];
-
-  static final List<Question> _energyAndTransportQuestions = [
-    Question('Should busy sections of highways be widened?'),
-    Question(
-        'Should Switzerland ban the registration of new passenger cars with internal combustion engines starting in 2035?'),
-    Question(
-        'To achieve climate targets, should incentives and target agreements be relied on exclusively, rather than bans and restrictions?'),
-    Question('Do you think it'
-        's fair that environmental and landscape protection rules are being relaxed to allow for the development of renewable energy?'),
-    Question(
-        'Should the construction of new nuclear power plants in Switzerland be allowed again?'),
-    Question(
-        'Should the state guarantee a comprehensive public service offering also in rural regions?'),
-    Question(
-        'Would you be in favor of the introduction of increasing electricity tariffs when consumption is higher (progressive electricity tariffs)?'),
-  ];
-
-  static final List<Question> _natureAndConservationQuestions = [
-    Question(
-        'Are you in favor of further relaxing the protection regulations for large predators (lynx, wolf, bear)?'),
-    Question(
-        'Should direct payments only be granted to farmers with proof of ecological performance?'),
-    Question(
-        'Are you in favour of stricter animal welfare regulations for livestock (e.g. permanent access to outdoor areas)?'),
-    Question('Should 30% of Switzerland' 's land area be dedicated to preserving biodiversity?'),
-    Question('Would you support a ban on single-use plastic and non-recyclable plastics?'),
-    Question(
-        'Are you in favour of government measures to make the use of electronic devices more sustainable (e.g., right to repair, extension of warranty period, minimum guaranteed period for software updates)?'),
-  ];
-
-  static final List<Question> _democracyMediaAndDigitizationQuestions = [
-    Question(
-        'Should the Swiss mobile network be equipped throughout the country with the latest technology (currently 5G standard)?'),
-    Question(
-        'Should the federal government be given additional powers in the area of digitization of government services in order to be able to impose binding directives and standards on the cantons?'),
-    Question(
-        'Are you in favor of stronger regulation of the major Internet platforms (i.e., transparency rules on algorithms, increased liability for content, combating disinformation)?'),
-    Question(
-        'A popular initiative aims to reduce television and radio fees (CHF 200 per household, exemption for businesses). Do you support this initiative?'),
-    Question('Are you in favour of lowering the voting age to 16?'),
-    Question(
-        'Should it be possible to hold a referendum on federal spending above a certain amount (optional financial referendum)?'),
-  ];
-
-  static final hawaiiGroups = [
-    welfare,
-    health,
-    education,
-    immigrationAndIntegration,
-    societyAndEthics,
-    financesAndTaxes,
-    economyAndLabour,
-    energyAndTransport,
-    natureAndConservation,
-    democracyMediaAndDigitization
-  ];
-
-  static final List<Elections> _fakeElections = [
-    Elections('Hawaii', 'Elections for parliament in Hawaii in Spring 2024', 'Hawaii',
-        _hawaiiParties.map((p) => p.id), _hawaiiCandidates, getHawaiiGroups()),
-    Elections(
-        'Prague',
-        'Presidential elections in Czech',
-        'Czechia',
-        _czechParties.map((p) => p.id),
-        _czechCandidates,
-        [welfare, health, education, immigrationAndIntegration]),
-    Elections('New York', 'Voting of local policemen', 'NY', _nyParties.map((p) => p.id),
-        _nyCandidates, [welfare, health, education]),
-  ];
+  FakeDataModel(this.data);
 
   @override
   Future<List<Elections>> loadElections({String? tag}) async {
-    return _fakeElections;
+    return Future.value(data.fakeElections);
   }
-
-  static List<QuestionGroup> getHawaiiGroups() {
-    hawaiiGroups.forEach((g) => g.orderQuestions());
-    for (var i = 0; i < hawaiiGroups.length; i++) {
-      hawaiiGroups[i].order = 10 * (i + 1);
-    }
-    return hawaiiGroups;
-  }
-
-  @override
-  Future<List<Party>> loadParties(Elections elections) {
-    List<Party> parties = [];
-    elections.parties.forEach((partyId) {
-      if (allParties.containsKey(partyId)) {
-        parties.add(allParties[partyId]!);
-      }
-    });
-    return Future.value(parties);
-  }
-
-  @override
-  Future<List<QuestionGroup>> loadGroups(Elections elections) =>
-      throw 'This should never be called, groups should already be pre-loaded';
-
-  @override
-  Future<List<Question>> loadQuestions(Elections elections, QuestionGroup group) =>
-      throw 'This should never be called, questions should already be pre-loaded';
 
   /// This should be only ad hoc to import fake data into real storage.
-  static void saveCurrentQuestionsGroupsToFirebase_DumpOnly(
-      CollectionReference<Elections> electionsRef, Elections elections) async {
-    for (var group in await elections.getGroups(FakeDataModel())) {
-      var groupCollection = await electionsRef.doc(elections.id).collection('groups').withConverter(
-          fromFirestore: (snapshot, _) => QuestionGroup.fromFirestore(snapshot),
-          toFirestore: (group, _) => group.toFirestore());
-      var groupRef = await groupCollection.add(group);
+  // static void saveCurrentQuestionsGroupsToFirebase_DumpOnly(
+  //     CollectionReference<Elections> electionsRef, Elections elections) async {
+  //   for (var group in await elections.getGroups(this)) {
+  //     var groupCollection = await electionsRef.doc(elections.id).collection('groups').withConverter(
+  //         fromFirestore: (snapshot, _) => QuestionGroup.fromFirestore(snapshot),
+  //         toFirestore: (group, _) => group.toFirestore());
+  //     var groupRef = await groupCollection.add(group);
+  //
+  //     for (var question in group.questions!) {
+  //       var questionCollection = groupRef.collection('questions').withConverter(
+  //           fromFirestore: (snapshot, _) => Question.fromFirestore(snapshot),
+  //           toFirestore: (question, _) => question.toFirestore());
+  //       await questionCollection.add(question);
+  //     }
+  //   }
+  // }
+}
 
-      for (var question in group.questions!) {
-        var questionCollection = groupRef.collection('questions').withConverter(
-            fromFirestore: (snapshot, _) => Question.fromFirestore(snapshot),
-            toFirestore: (question, _) => question.toFirestore());
-        await questionCollection.add(question);
-      }
+class FakeElections implements Elections {
+  @override
+  String name;
+
+  @override
+  String description;
+
+  @override
+  String location;
+
+  final List<FakeParty> parties;
+  final List<FakeQuestionGroup> _questionGroups;
+
+
+  FakeElections(this.name, this.description, this.location, this.parties,
+      this._questionGroups);
+
+  void orderGroups() {
+    for (var i = 0; i < _questionGroups.length; i++) {
+      _questionGroups[i].order = 10 * (i + 1);
     }
   }
+
+  @override
+  Future<List<Party>> getParties() async => Future.value(parties);
+
+  @override
+  Future<List<QuestionGroup>> getGroups() async => Future.value(_questionGroups);
+}
+
+class FakeParty implements Party {
+  @override
+  String name;
+
+  @override
+  String description;
+
+  FakeParty(this.name)
+      : description = 'Description of party $name';
+}
+
+class FakeQuestionGroup implements QuestionGroup {
+  @override
+  String name;
+
+  @override
+  num? order;
+
+  final List<FakeQuestion> _questions;
+
+  void orderQuestions() {
+    for (var i = 0; i < _questions.length; i++) {
+      _questions[i].order = 10 * (i + 1);
+    }
+  }
+
+  FakeQuestionGroup(this.name, this._questions) ;
+
+  @override
+  Future<List<Question>> getQuestions() {
+    // TODO: implement getQuestions
+    throw UnimplementedError();
+  }
+}
+
+class FakeQuestion implements Question {
+  @override
+  String text;
+
+  @override
+  num? order;
+
+  FakeQuestion(this.text);
+}
+
+class FakeQuestionResponse implements QuestionResponse {
+  @override
+  double? response;
+
+  @override
+  double? weight;
+
+  FakeQuestionResponse(this.response);
+
+  FakeQuestionResponse.withWeight(this.response, this.weight);
+
+  FakeQuestionResponse.empty()
+      : response = 0,
+        weight = 1;
 }

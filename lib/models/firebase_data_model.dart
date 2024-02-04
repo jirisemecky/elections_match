@@ -66,3 +66,63 @@ class FirebaseDataModel extends DataModel {
         .then((querySnapshot) => querySnapshot.docs.map((questionRef) => questionRef.data()).toList());
   }
 }
+
+class FirebaseElections implements Elections {
+  Future<List<QuestionGroup>> getGroups(DataModel dataModel) async {
+    if (_questionGroups != null) {
+      return Future.value(_questionGroups);
+    }
+    return dataModel.loadGroups(this);
+  }
+
+
+  FirebaseElections.fromFirestore(this.id, Map<String, dynamic> data)
+      : name = data['Name'],
+        description = data['Description'],
+        location = data['Location'],
+        parties = data['parties'];
+
+  Map<String, Object?> toFirestore() =>
+      {'Name': name, 'Description': description, 'Location': location, 'parties': parties};
+}
+
+class FirebaseParty implements Party {
+
+  FirebaseParty.fromFirestore(this.id, Map<String, dynamic> data)
+      : name = data['name'],
+        description = data['description'] ?? '';
+
+  Map<String, Object?> toFirestore() => {'name': name, 'description': description};
+}
+
+class FirebaseCandidate implements Candidate {
+
+}
+
+class FirebaseQuestionGroup implements QuestionGroup {
+
+  QuestionGroup.fromFirestore(DocumentSnapshot<Map<String, dynamic>> snapshot)
+      : id = snapshot.id,
+        name = snapshot.data()!['name'],
+        order = snapshot.data()!['order'];
+
+  Map<String, Object?> toFirestore() => {'order': order, 'name': name};
+}
+class FirebaseQuestion implements Question {
+
+  Question.fromFirestore(DocumentSnapshot<Map<String, dynamic>> snapshot)
+      : id = snapshot.id,
+        order = snapshot.data()!['order'],
+        text = snapshot.data()!['text'];
+
+  Map<String, Object?> toFirestore() => {'order': order, 'text': text};
+}
+class FirebaseQuestionResponse implements QuestionResponse {
+
+  QuestionResponse.fromFirestore(Map<String, dynamic> data)
+      : response = data['response'],
+        weight = data['weight'];
+
+  Map<String, Object?> toFirestore() => {'response': response, 'weight': weight};
+}
+

@@ -26,7 +26,7 @@ class _MatchingScreenState extends State<MatchingScreen> with SingleTickerProvid
   }
 
   void loadData() async {
-    widget.elections.getGroups(widget.dataModel).then((value) =>
+    widget.elections.getGroups().then((value) =>
         setState(() {
           groups = value;
         }));
@@ -65,10 +65,10 @@ class _MatchingScreenState extends State<MatchingScreen> with SingleTickerProvid
     return TabBarView(controller: _tabController, children: children);
   }
 
-  buildGroupWidget(BuildContext context, QuestionGroup group, int index, int numberOfGroups) {
+  buildGroupWidget(BuildContext context, QuestionGroup group, int index, int numberOfGroups) async {
     var questionWidgets = <Widget>[];
     int i = 1;
-    for (final question in group.getQuestions(widget.dataModel, widget.elections) ?? []) {
+    for (final question in await group.getQuestions() ?? []) {
       questionWidgets.add(QuestionSelector(widget.elections, question, i++));
     }
 
