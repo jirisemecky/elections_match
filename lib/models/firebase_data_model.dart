@@ -4,8 +4,8 @@ import 'package:elections_match/models/data.dart';
 /// Class fetching data from Firebase instance.
 class FirebaseDataModel extends DataModel {
   late FirebaseFirestore db;
-  late CollectionReference<Elections> electionsRef;
-  late CollectionReference<Party> partiesRef;
+  late CollectionReference<FirebaseElections> electionsRef;
+  late CollectionReference<FirebaseParty> partiesRef;
 
   static FirebaseDataModel? _singleton;
 
@@ -20,15 +20,15 @@ class FirebaseDataModel extends DataModel {
   FirebaseDataModel._internal() {
     db = FirebaseFirestore.instance;
     electionsRef = db.collection('elections').withConverter(
-        fromFirestore: (snapshot, _) => Elections.fromFirestore(snapshot.id, snapshot.data()!),
+        fromFirestore: (snapshot, _) => FirebaseElections.fromFirestore(snapshot),
         toFirestore: (elections, _) => elections.toFirestore());
     partiesRef = db.collection('parties').withConverter(
-        fromFirestore: (snapshot, _) => Party.fromFirestore(snapshot.id, snapshot.data()!),
+        fromFirestore: (snapshot, _) => FirebaseParty.fromFirestore(snapshot.id, snapshot.data()!),
         toFirestore: (party, _) => party.toFirestore());
   }
 
   @override
-  Future<List<Elections>> loadElections({String? tag}) => electionsRef
+  Future<List<FirebaseElections>> getElections({String? tag}) => electionsRef
       .get()
       .then((querySnapshot) => querySnapshot.docs.map((snapshot) => snapshot.data()).toList());
 
@@ -40,26 +40,16 @@ class FirebaseDataModel extends DataModel {
         .doc(elections.id)
         .collection('parties')
         .withConverter(
-            fromFirestore: (snapshot, _) => Party.fromFirestore(snapshot.id, snapshot.data()!),
+            fromFirestore: (snapshot, _) => FirebaseParty.fromFirestore(snapshot.id, snapshot.data()!),
             toFirestore: (party, _) => party.toFirestore())
         .get()
         .then((querySnapshot) => querySnapshot.docs.map((partyRef) => partyRef.data()).toList());
   }
 
   @override
-  Future<List<QuestionGroup>> loadGroups(Elections elections) {
-    var collectionRef = electionsRef.doc(elections.id).collection('groups').withConverter(
-        fromFirestore: (snapshot, _) => QuestionGroup.fromFirestore(snapshot),
-        toFirestore: (group, _) => group.toFirestore());
-    return collectionRef
-        .get()
-        .then((querySnapshot) => querySnapshot.docs.map((groupRef) => groupRef.data()).toList());
-  }
-
-  @override
   Future<List<Question>> loadQuestions(Elections elections, QuestionGroup group) {
     var collectionRef = electionsRef.doc(elections.id).collection('groups').doc(group.id).collection('questions').withConverter(
-        fromFirestore: (snapshot, _) => Question.fromFirestore(snapshot),
+        fromFirestore: (snapshot, _) => FirebaseQuestion.fromFirestore(snapshot),
         toFirestore: (question, _) => question.toFirestore());
     return collectionRef
         .get()
@@ -68,19 +58,48 @@ class FirebaseDataModel extends DataModel {
 }
 
 class FirebaseElections implements Elections {
-  Future<List<QuestionGroup>> getGroups(DataModel dataModel) async {
-    if (_questionGroups != null) {
-      return Future.value(_questionGroups);
+  DocumentReference<Map<String, dynamic>> reference;
+  Map<String, dynamic> data;
+
+  @override
+  String get name => data['name'];
+
+  @override
+  String get description => data['Description'];
+
+  @override
+  String get location => data['Location'];
+
+  List<FirebaseQuestionGroup>? _groupCache;
+
+  @override
+  Future<List<QuestionGroup>> getGroups() async {
+    if (_groupCache != null) {
+      return Future.value(_groupCache);
     }
+
+    var collectionRef = reference.doc(elections.id).collection('groups').withConverter(
+        fromFirestore: (snapshot, _) => FirebaseQuestionGroup.fromFirestore(snapshot),
+        toFirestore: (group, _) => group.toFirestore());
+      return collectionRef
+          .get()
+          .then((querySnapshot) => querySnapshot.docs.map((groupRef) => groupRef.data()).toList());
+
+
+
     return dataModel.loadGroups(this);
   }
 
 
-  FirebaseElections.fromFirestore(this.id, Map<String, dynamic> data)
-      : name = data['Name'],
-        description = data['Description'],
-        location = data['Location'],
-        parties = data['parties'];
+  @override
+  Future<List<Party>> getParties() {
+    // TODO: implement getParties
+    throw UnimplementedError();
+  }
+
+  FirebaseElections.fromFirestore(DocumentSnapshot<Map<String, dynamic>> snapshot)
+      : reference =snapshot.reference,
+        data = snapshot.data();
 
   Map<String, Object?> toFirestore() =>
       {'Name': name, 'Description': description, 'Location': location, 'parties': parties};

@@ -12,7 +12,7 @@ class FakeDataModel implements DataModel {
   FakeDataModel(this.data);
 
   @override
-  Future<List<Elections>> loadElections({String? tag}) async {
+  Future<List<Elections>> getElections({String? tag}) async {
     return Future.value(data.fakeElections);
   }
 

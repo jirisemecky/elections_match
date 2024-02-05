@@ -57,7 +57,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void loadData(DataModel dataModel) async {
-    var tempData = await dataModel.loadElections();
+    var tempData = await dataModel.getElections();
     setState(() {
       data = tempData;
     });

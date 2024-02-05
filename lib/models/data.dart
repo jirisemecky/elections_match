@@ -2,7 +2,7 @@ import 'dart:core';
 
 /// Model providing interface for fetching data.
 abstract class DataModel {
-  Future<List<Elections>> loadElections({String? tag});
+  Future<List<Elections>> getElections({String? tag});
 }
 
 abstract class Elections {
