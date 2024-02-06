@@ -128,9 +128,9 @@ final class FakeDataDefinition {
 
   static final List<FakeQuestion> _immigrationAndIntegrationQuestions = [
     FakeQuestion(
-        'Should the conditions for naturalization be relaxed (e.g., shorter ￼residence period)?'),
+        'Should the conditions for naturalization be relaxed (e.g., shorter residence period)?'),
     FakeQuestion(
-        'Should more qualified workers from non-EU/EFTA countries be allowed to work in Switzerland (increase ￼third-country quota)?'),
+        'Should more qualified workers from non-EU/EFTA countries be allowed to work in Switzerland (increase third-country quota)?'),
     FakeQuestion(
         'Do you support efforts to house asylum seekers in centers outside Europe during the asylum procedure?'),
     FakeQuestion(
@@ -157,13 +157,13 @@ final class FakeDataDefinition {
 
   static final List<FakeQuestion> _economyAndLabourQuestions = [
     FakeQuestion(
-        'Are you in favor of introducing a ￼minimum wage of CHF 4,000 for all full-time employees?'),
+        'Are you in favor of introducing a minimum wage of CHF 4,000 for all full-time employees?'),
     FakeQuestion(
-        'Do you support stricter regulations for the financial sector (e.g., stricter ￼capital requirements for banks, ban on bonuses)?'),
+        'Do you support stricter regulations for the financial sector (e.g., stricter capital requirements for banks, ban on bonuses)?'),
     FakeQuestion(
-        'Should private households be free to choose their electricity supplier (complete ￼liberalization of the electricity market)?'),
+        'Should private households be free to choose their electricity supplier (complete liberalization of the electricity market)?'),
     FakeQuestion(
-        'Should housing construction regulations be relaxed (e.g., noise protection, ￼occupancy rates)?'),
+        'Should housing construction regulations be relaxed (e.g., noise protection, occupancy rates)?'),
     FakeQuestion('Are you in favor of stricter controls on equal pay for women and men?'),
   ];
 
