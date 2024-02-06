@@ -1,35 +1,27 @@
 import 'package:elections_match/models/data.dart';
 import 'package:elections_match/screens/matching_results_screen.dart';
-import 'package:elections_match/widgets/question_selector.dart';
+import 'package:elections_match/widgets/question_group_widget.dart';
 import 'package:elections_match/widgets/styles.dart';
 import 'package:flutter/material.dart';
 
 class MatchingScreen extends StatefulWidget {
   final DataModel dataModel;
   final Elections elections;
+  final List<QuestionGroup> groups;
 
   @override
   State<MatchingScreen> createState() => _MatchingScreenState();
 
-  const MatchingScreen(this.dataModel, this.elections, {super.key});
+  const MatchingScreen(this.dataModel, this.elections, this.groups, {super.key});
 }
 
 class _MatchingScreenState extends State<MatchingScreen> with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  List<QuestionGroup>? groups;
 
   @override
   void initState() {
     super.initState();
-    loadData();
-    _tabController = TabController(length: groups?.length ?? 0, vsync: this);
-  }
-
-  void loadData() async {
-    widget.elections.getGroups().then((value) =>
-        setState(() {
-          groups = value;
-        }));
+    _tabController = TabController(length: widget.groups.length, vsync: this);
   }
 
   @override
@@ -47,52 +39,43 @@ class _MatchingScreenState extends State<MatchingScreen> with SingleTickerProvid
         bottom: buildTabBar(),
       ),
       body: buildQuestionGroups(context),
+      bottomSheet: buildNavagationRow(),
     );
   }
 
   TabBar buildTabBar() => TabBar(
         isScrollable: true,
         controller: _tabController,
-        tabs: [for (final g in groups ?? []) Tab(text: g.name)],
+        tabs: [for (final g in widget.groups ?? []) Tab(text: g.name)],
       );
 
   TabBarView buildQuestionGroups(BuildContext context) {
     int i = 1;
     final children = <Widget>[];
-    for (final g in groups ?? []) {
-      children.add(buildGroupWidget(context, g, i++, groups?.length ?? 0));
+    for (final g in widget.groups ?? []) {
+      children.add(Padding(
+          padding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
+          child: QuestionGroupWidget(g, widget.elections)));
     }
     return TabBarView(controller: _tabController, children: children);
   }
 
-  buildGroupWidget(BuildContext context, QuestionGroup group, int index, int numberOfGroups) async {
-    var questionWidgets = <Widget>[];
-    int i = 1;
-    for (final question in await group.getQuestions() ?? []) {
-      questionWidgets.add(QuestionSelector(widget.elections, question, i++));
-    }
-
-    final navigationRow = Row(children: [
-      if (index > 1) ElevatedButton(onPressed: previousGroup, child: const Text('Previous')),
-      const Spacer(),
-      if (index < numberOfGroups) ElevatedButton(onPressed: nextGroup, child: const Text('Next')),
-      if (index == numberOfGroups)
-        ElevatedButton(onPressed: () => submitAnswers(context), child: const Text('Submit'))
-    ]);
-
-    return ListView(
-      padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 8),
-        children: <Widget>[AppBar(automaticallyImplyLeading: false, title: Text(group.name))] +
-            questionWidgets +
-            [navigationRow]);
-  }
-
-  void previousGroup() => _tabController.animateTo(_tabController.index -1);
+  void previousGroup() => _tabController.animateTo(_tabController.index - 1);
 
   void nextGroup() => _tabController.animateTo(_tabController.index + 1);
 
   void submitAnswers(BuildContext context) {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => MatchingResultsScreen(widget.elections)));
+  }
+
+  buildNavagationRow() {
+    var numberOfGroups = widget.groups.length;
+    return Row(children: [
+      ElevatedButton(onPressed: previousGroup, child: const Text('Previous')),
+      const Spacer(),
+      ElevatedButton(onPressed: nextGroup, child: const Text('Next')),
+      ElevatedButton(onPressed: () => submitAnswers(context), child: const Text('Submit'))
+    ]);
   }
 }

@@ -16,6 +16,20 @@ class ElectionsScreen extends StatefulWidget {
 
 class _ElectionScreenState extends State<ElectionsScreen> {
   List<Party>? partiesData;
+  List<QuestionGroup>? groups;
+
+  @override
+  void initState() {
+    super.initState();
+    partiesData = [];
+    groups = [];
+    loadData();
+  }
+
+  void loadData() async {
+    widget.elections.getParties().then((value) => setState(() => partiesData = value));
+    widget.elections.getGroups().then((value) => setState(() => groups = value));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,18 +38,13 @@ class _ElectionScreenState extends State<ElectionsScreen> {
           backgroundColor: appBarBackgroundColor(context),
           title: Text('Elections ${widget.elections.name}')),
       body: Column(
-        children: [
-          buildIntroSection(),
-          buildPartyList(),
-          buildMatchingSection(context)
-        ],
+        children: [buildIntroSection(), buildPartyList(), buildMatchingSection(context)],
       ),
     );
   }
 
   Widget buildPartyList() {
     if (partiesData == null) {
-      widget.elections.getParties().then(partiesLoaded);
       return const LinearProgressIndicator();
     }
 
@@ -44,12 +53,6 @@ class _ElectionScreenState extends State<ElectionsScreen> {
     }
 
     return Column(children: partiesData!.map((p) => PartyCard(p)).toList());
-  }
-
-  void partiesLoaded(List<Party> value) {
-    setState(() {
-      partiesData = value;
-    });
   }
 
   Widget buildIntroSection() => Container(
@@ -62,15 +65,19 @@ class _ElectionScreenState extends State<ElectionsScreen> {
   Widget buildMatchingSection(BuildContext context) => Column(
         children: [
           const Text('Candidate matching'),
-          ElevatedButton(
-              onPressed: () => runElectionMatching(context),
-              style: ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20)),
-              child: const Text('Run election matching'))
+          Text('Question groups ${groups?.length ?? "... loading ..."}'),
+          if ((groups?.length ?? 0) > 0)
+            ElevatedButton(
+                onPressed: () => runElectionMatching(context),
+                style: ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20)),
+                child: const Text('Run election matching'))
         ],
       );
 
   runElectionMatching(BuildContext context) {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => MatchingScreen(widget.dataModel, widget.elections)));
+        context,
+        MaterialPageRoute(
+            builder: (context) => MatchingScreen(widget.dataModel, widget.elections, groups!)));
   }
 }

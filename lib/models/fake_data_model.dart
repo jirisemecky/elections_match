@@ -94,10 +94,7 @@ class FakeQuestionGroup implements QuestionGroup {
   FakeQuestionGroup(this.name, this._questions) ;
 
   @override
-  Future<List<Question>> getQuestions() {
-    // TODO: implement getQuestions
-    throw UnimplementedError();
-  }
+  Future<List<Question>> getQuestions() => Future.value(_questions);
 }
 
 class FakeQuestion implements Question {
