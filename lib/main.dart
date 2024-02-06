@@ -1,6 +1,5 @@
 import 'package:elections_match/models/data.dart';
-import 'package:elections_match/models/fake_data_definition.dart';
-import 'package:elections_match/models/fake_data_model.dart';
+import 'package:elections_match/models/firebase_data_model.dart';
 import 'package:elections_match/screens/elections_screen.dart';
 import 'package:elections_match/widgets/elections_item.dart';
 import 'package:elections_match/widgets/styles.dart';
@@ -19,8 +18,8 @@ class MyApp extends StatelessWidget {
   late final DataModel dataModel;
 
   MyApp({super.key}) {
-    dataModel = FakeDataModel(FakeDataDefinition());
-    // dataModel = FirebaseDataModel();
+    // dataModel = FakeDataModel(FakeDataDefinition());
+    dataModel = FirebaseDataModel();
   }
 
   // This widget is the root of your application.
