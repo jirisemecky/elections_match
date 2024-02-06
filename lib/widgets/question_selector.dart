@@ -19,9 +19,8 @@ class _QuestionSelectorState extends State<QuestionSelector> {
 
   QuestionResponse data;
 
-
   _QuestionSelectorState(Elections elections, Question question)
-      : this.data = getUserStorage().getElections(elections).getQuestion(question);
+      : data = getUserStorage().getElections(elections).getQuestion(question);
 
   @override
   Widget build(BuildContext context) =>

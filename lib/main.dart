@@ -1,7 +1,6 @@
 import 'package:elections_match/models/data.dart';
 import 'package:elections_match/models/fake_data_definition.dart';
 import 'package:elections_match/models/fake_data_model.dart';
-import 'package:elections_match/models/firebase_data_model.dart';
 import 'package:elections_match/screens/elections_screen.dart';
 import 'package:elections_match/widgets/elections_item.dart';
 import 'package:elections_match/widgets/styles.dart';

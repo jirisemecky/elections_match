@@ -39,20 +39,19 @@ class _MatchingScreenState extends State<MatchingScreen> with SingleTickerProvid
         bottom: buildTabBar(),
       ),
       body: buildQuestionGroups(context),
-      bottomSheet: buildNavagationRow(),
+      bottomSheet: buildNavigationRow(),
     );
   }
 
   TabBar buildTabBar() => TabBar(
         isScrollable: true,
         controller: _tabController,
-        tabs: [for (final g in widget.groups ?? []) Tab(text: g.name)],
+        tabs: [for (final g in widget.groups) Tab(text: g.name)],
       );
 
   TabBarView buildQuestionGroups(BuildContext context) {
-    int i = 1;
     final children = <Widget>[];
-    for (final g in widget.groups ?? []) {
+    for (final g in widget.groups) {
       children.add(Padding(
           padding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
           child: QuestionGroupWidget(g, widget.elections)));
@@ -69,8 +68,7 @@ class _MatchingScreenState extends State<MatchingScreen> with SingleTickerProvid
         context, MaterialPageRoute(builder: (context) => MatchingResultsScreen(widget.elections)));
   }
 
-  buildNavagationRow() {
-    var numberOfGroups = widget.groups.length;
+  Widget buildNavigationRow() {
     return Row(children: [
       ElevatedButton(onPressed: previousGroup, child: const Text('Previous')),
       const Spacer(),

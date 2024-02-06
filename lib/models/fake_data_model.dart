@@ -1,6 +1,3 @@
-import 'dart:html';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elections_match/models/fake_data_definition.dart';
 
 import 'data.dart';

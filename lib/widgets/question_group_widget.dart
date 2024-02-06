@@ -1,18 +1,15 @@
 import 'package:elections_match/models/data.dart';
 import 'package:elections_match/widgets/question_selector.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class QuestionGroupWidget extends StatefulWidget {
   final QuestionGroup group;
   final Elections elections;
 
-  QuestionGroupWidget(this.group, this.elections);
+  const QuestionGroupWidget(this.group, this.elections, {super.key});
 
   @override
   State<StatefulWidget> createState() => _QuestionGroupWidgetState();
-
-
 }
 
 class _QuestionGroupWidgetState extends State<QuestionGroupWidget> {
