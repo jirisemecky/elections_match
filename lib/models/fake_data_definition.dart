@@ -235,4 +235,6 @@ final class FakeDataDefinition {
     FakeElections('New York', 'Voting of local policemen', 'NY', _nyParties,
         [welfare, health, education]),
   ];
+
+  final FakeUser fakeTestUsers = FakeUser('test-1');
 }

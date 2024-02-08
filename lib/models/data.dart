@@ -31,6 +31,17 @@ abstract class Question {
   String get text;
 }
 
+/// Data for a single logged in user.
+abstract class User {
+  String get id;
+  Future<ElectionResponses> getResponses(Elections elections);
+}
+
+/// Representation of responses to all questions in the elections.
+abstract class ElectionResponses {
+  Map<String, QuestionResponse> getQuestionToResponses();
+}
+
 /// Representation of response from a candidate or a user to a question.
 abstract class QuestionResponse {
   double? get response;

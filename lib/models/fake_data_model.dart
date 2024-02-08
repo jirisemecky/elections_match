@@ -101,3 +101,23 @@ class FakeQuestionResponse implements QuestionResponse {
       : response = 0,
         weight = 1;
 }
+
+class FakeUser implements User {
+  @override
+  String id;
+
+  FakeUser(this.id);
+
+  @override
+  Future<FakeElectionResponses> getResponses(Elections elections) {
+    // TODO: implement getResponses
+    throw UnimplementedError();
+  }
+}
+
+class FakeElectionResponses implements ElectionResponses {
+  Map<String, QuestionResponse> responses = {};
+
+  @override
+  Map<String, QuestionResponse> getQuestionToResponses() => responses;
+}
