@@ -1,5 +1,5 @@
 import 'package:elections_match/models/data.dart';
-import 'package:elections_match/screens/matching_results_screen.dart';
+import 'package:elections_match/screens/results_screen.dart';
 import 'package:elections_match/widgets/question_group_widget.dart';
 import 'package:elections_match/widgets/styles.dart';
 import 'package:flutter/material.dart';
@@ -65,7 +65,7 @@ class _MatchingScreenState extends State<MatchingScreen> with SingleTickerProvid
 
   void submitAnswers(BuildContext context) {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => MatchingResultsScreen(widget.elections)));
+        context, MaterialPageRoute(builder: (context) => ResultsScreen(widget.elections)));
   }
 
   Widget buildNavigationRow() {

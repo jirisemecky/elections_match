@@ -1,27 +1,34 @@
 import 'package:elections_match/models/data.dart';
 import 'package:flutter/material.dart';
 
-class MatchingResultsScreen extends StatelessWidget {
+class ResultsScreen extends StatelessWidget {
   final Elections elections;
 
-  const MatchingResultsScreen(this.elections, {super.key});
+  const ResultsScreen(this.elections, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: const Text('Matching candidates...')),
         body: Column(
-            children: buildCandidateMatches() +
+            children: buildCandidateMatches() + buildPartyMatches() +
                 [
+                  const Padding(padding: EdgeInsets.all(20),
+                    child: Text(
+                        'Here we show candidates matching your personal answers, based on our similarity algorithm.')),
                   ElevatedButton(
-                      onPressed: () => backToElection(),
+                      onPressed: () => backToElection(context),
                       style: ElevatedButton.styleFrom(
                           textStyle: const TextStyle(fontSize: 20)),
-                      child: const Text('Finish matching'))
+                      child: const Text('Back to election overview'))
                 ]));
   }
 
   List<Widget> buildCandidateMatches() {
+    return [];
+  }
+
+  List<Widget> buildPartyMatches() {
     var partyMatches = <Widget>[];
     for (final party in [] /*elections.getParties()*/) {
       partyMatches.add(Row(
@@ -38,5 +45,9 @@ class MatchingResultsScreen extends StatelessWidget {
     return partyMatches;
   }
 
-  backToElection() {}
+  backToElection(BuildContext context) {
+    // TODO(jirka): this is a bit dirty, better would be popUptil() if we can name the states.
+    Navigator.pop(context);
+    Navigator.pop(context);
+  }
 }
