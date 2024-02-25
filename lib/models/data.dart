@@ -33,6 +33,7 @@ abstract class Question {
 
 /// Data for a single logged in user.
 abstract class User {
+
   String get id;
   Future<ElectionResponses> getResponses(Elections elections);
 }
