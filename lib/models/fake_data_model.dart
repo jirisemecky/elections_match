@@ -26,10 +26,11 @@ class FakeElections implements Elections {
 
   final List<FakeParty> parties;
   final List<FakeQuestionGroup> _questionGroups;
+  final List<FakeCandidate> _candidates;
 
 
   FakeElections(this.name, this.description, this.location, this.parties,
-      this._questionGroups);
+      this._questionGroups, this._candidates);
 
   void orderGroups() {
     for (var i = 0; i < _questionGroups.length; i++) {
@@ -42,6 +43,9 @@ class FakeElections implements Elections {
 
   @override
   Future<List<QuestionGroup>> getGroups() async => Future.value(_questionGroups);
+
+  @override
+  Future<List<Candidate>> getCandidates() async => Future.value(_candidates);
 }
 
 class FakeParty implements Party {
@@ -120,4 +124,17 @@ class FakeElectionResponses implements ElectionResponses {
 
   @override
   Map<String, QuestionResponse> getQuestionToResponses() => responses;
+}
+
+class FakeCandidate implements Candidate {
+  @override
+  String firstName;
+
+  @override
+  String lastName;
+
+  @override
+  Party party;
+
+  FakeCandidate(this.firstName, this.lastName, this.party);
 }

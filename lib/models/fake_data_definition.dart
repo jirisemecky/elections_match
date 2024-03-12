@@ -1,3 +1,4 @@
+import 'data.dart';
 import 'fake_data_model.dart';
 
 final class FakeDataDefinition {
@@ -8,24 +9,24 @@ final class FakeDataDefinition {
     FakeParty('Surfers to the islands'),
   ];
 
-  // static final List<Candidate> _hawaiiCandidates = [
-  //   Candidate('Amoura', 'Lopez', _hawaiiParties[0]),
-  //   Candidate('Michael', 'Murray', _hawaiiParties[0]),
-  //   Candidate('Faith', 'Alfaro', _hawaiiParties[0]),
-  //   Candidate('Xzavier', 'Garrison', _hawaiiParties[0]),
-  //   Candidate('Cadence', 'Wong', _hawaiiParties[1]),
-  //   Candidate('Walter', 'Santos', _hawaiiParties[1]),
-  //   Candidate('Alana', 'Newman', _hawaiiParties[1]),
-  //   Candidate('Anderson', 'Portillo', _hawaiiParties[2]),
-  //   Candidate('Nathalie', 'Andrade', _hawaiiParties[2]),
-  //   Candidate('Abdiel', 'Freeman', _hawaiiParties[2]),
-  //   Candidate('Norah', 'Arellano', _hawaiiParties[2]),
-  //   Candidate('Kellan', 'Peck', _hawaiiParties[2]),
-  //   Candidate('Crystal', 'Kent', _hawaiiParties[3]),
-  //   Candidate('Mekhi', 'Tran', _hawaiiParties[3]),
-  //   Candidate('Kylie', 'Little', _hawaiiParties[3]),
-  //   Candidate('Lennox', 'Warner', _hawaiiParties[3]),
-  // ];
+  static final List<FakeCandidate> _hawaiiCandidates = [
+    FakeCandidate('Amoura', 'Lopez', _hawaiiParties[0]),
+    FakeCandidate('Michael', 'Murray', _hawaiiParties[0]),
+    FakeCandidate('Faith', 'Alfaro', _hawaiiParties[0]),
+    FakeCandidate('Xzavier', 'Garrison', _hawaiiParties[0]),
+    FakeCandidate('Cadence', 'Wong', _hawaiiParties[1]),
+    FakeCandidate('Walter', 'Santos', _hawaiiParties[1]),
+    FakeCandidate('Alana', 'Newman', _hawaiiParties[1]),
+    FakeCandidate('Anderson', 'Portillo', _hawaiiParties[2]),
+    FakeCandidate('Nathalie', 'Andrade', _hawaiiParties[2]),
+    FakeCandidate('Abdiel', 'Freeman', _hawaiiParties[2]),
+    FakeCandidate('Norah', 'Arellano', _hawaiiParties[2]),
+    FakeCandidate('Kellan', 'Peck', _hawaiiParties[2]),
+    FakeCandidate('Crystal', 'Kent', _hawaiiParties[3]),
+    FakeCandidate('Mekhi', 'Tran', _hawaiiParties[3]),
+    FakeCandidate('Kylie', 'Little', _hawaiiParties[3]),
+    FakeCandidate('Lennox', 'Warner', _hawaiiParties[3]),
+  ];
 
   static final List<FakeParty> _czechParties = [
     FakeParty('ODS'),
@@ -37,43 +38,43 @@ final class FakeDataDefinition {
     FakeParty('Socani'),
   ];
 
-  // static final List<Candidate> _czechCandidates = [
-  //   Candidate('Jozef', 'Kliment', _czechParties[0]),
-  //   Candidate('Petra', 'Cibulková', _czechParties[0]),
-  //   Candidate('Božena', 'Šišková', _czechParties[0]),
-  //   Candidate('Romana', 'Bečvářová', _czechParties[0]),
-  //   Candidate('Emil', 'Šafář', _czechParties[1]),
-  //   Candidate('Jindřiška', 'Vojáčková', _czechParties[1]),
-  //   Candidate('Nikola', 'Čiháková', _czechParties[1]),
-  //   Candidate('Iveta', 'Řeháčková', _czechParties[2]),
-  //   Candidate('Viktor', 'Gabriel', _czechParties[2]),
-  //   Candidate('Vojtěch', 'Suchánek', _czechParties[3]),
-  //   Candidate('Adam', 'Bartošek', _czechParties[3]),
-  //   Candidate('Marie', 'Kurková', _czechParties[3]),
-  //   Candidate('Miluše', 'Čápová', _czechParties[3]),
-  //   Candidate('Simona', 'Zemanová', _czechParties[3]),
-  //   Candidate('Zdenka', 'Holubová', _czechParties[3]),
-  //   Candidate('Renata', 'Veselá', _czechParties[4]),
-  //   Candidate('Libor', 'Medek', _czechParties[4]),
-  //   Candidate('Andrea', 'Smutná', _czechParties[5]),
-  //   Candidate('Marie', 'Janatová', _czechParties[6]),
-  //   Candidate('Dominika', 'Semerádová', _czechParties[6]),
-  // ];
+  static final List<FakeCandidate> _czechCandidates = [
+    FakeCandidate('Jozef', 'Kliment', _czechParties[0]),
+    FakeCandidate('Petra', 'Cibulková', _czechParties[0]),
+    FakeCandidate('Božena', 'Šišková', _czechParties[0]),
+    FakeCandidate('Romana', 'Bečvářová', _czechParties[0]),
+    FakeCandidate('Emil', 'Šafář', _czechParties[1]),
+    FakeCandidate('Jindřiška', 'Vojáčková', _czechParties[1]),
+    FakeCandidate('Nikola', 'Čiháková', _czechParties[1]),
+    FakeCandidate('Iveta', 'Řeháčková', _czechParties[2]),
+    FakeCandidate('Viktor', 'Gabriel', _czechParties[2]),
+    FakeCandidate('Vojtěch', 'Suchánek', _czechParties[3]),
+    FakeCandidate('Adam', 'Bartošek', _czechParties[3]),
+    FakeCandidate('Marie', 'Kurková', _czechParties[3]),
+    FakeCandidate('Miluše', 'Čápová', _czechParties[3]),
+    FakeCandidate('Simona', 'Zemanová', _czechParties[3]),
+    FakeCandidate('Zdenka', 'Holubová', _czechParties[3]),
+    FakeCandidate('Renata', 'Veselá', _czechParties[4]),
+    FakeCandidate('Libor', 'Medek', _czechParties[4]),
+    FakeCandidate('Andrea', 'Smutná', _czechParties[5]),
+    FakeCandidate('Marie', 'Janatová', _czechParties[6]),
+    FakeCandidate('Dominika', 'Semerádová', _czechParties[6]),
+  ];
 
   static final List<FakeParty> _nyParties = [FakeParty('Good cop'), FakeParty('Bad cop')];
 
-  // static final List<Candidate> _nyCandidates = [
-  //   Candidate('Camilla', 'Thomas', _nyParties[0]),
-  //   Candidate('Brynlee', 'Hughes', _nyParties[0]),
-  //   Candidate('Michael', 'Hamilton', _nyParties[0]),
-  //   Candidate('Elena', 'Porter', _nyParties[0]),
-  //   Candidate('Weston', 'Hale', _nyParties[0]),
-  //   Candidate('Emmett', 'Butler', _nyParties[0]),
-  //   Candidate('Hudson', 'Hammond', _nyParties[0]),
-  //   Candidate('Anaya', 'Fuller', _nyParties[0]),
-  //   Candidate('Remington', 'Berry', _nyParties[0]),
-  //   Candidate('Daleyza', 'Price', _nyParties[0])
-  // ];
+  static final List<FakeCandidate> _nyCandidates = [
+    FakeCandidate('Camilla', 'Thomas', _nyParties[0]),
+    FakeCandidate('Brynlee', 'Hughes', _nyParties[0]),
+    FakeCandidate('Michael', 'Hamilton', _nyParties[0]),
+    FakeCandidate('Elena', 'Porter', _nyParties[0]),
+    FakeCandidate('Weston', 'Hale', _nyParties[0]),
+    FakeCandidate('Emmett', 'Butler', _nyParties[0]),
+    FakeCandidate('Hudson', 'Hammond', _nyParties[0]),
+    FakeCandidate('Anaya', 'Fuller', _nyParties[0]),
+    FakeCandidate('Remington', 'Berry', _nyParties[0]),
+    FakeCandidate('Daleyza', 'Price', _nyParties[0])
+  ];
 
   static final FakeQuestionGroup welfare = FakeQuestionGroup(' Welfare state & family', _welfareQuestions);
   static final FakeQuestionGroup health = FakeQuestionGroup('Health', _healthQuestions);
@@ -225,15 +226,15 @@ final class FakeDataDefinition {
 
   final List<FakeElections> fakeElections = [
     FakeElections('Hawaii', 'FakeElections for parliament in Hawaii in Spring 2024', 'Hawaii',
-        _hawaiiParties, hawaiiGroups),
+        _hawaiiParties, hawaiiGroups, _hawaiiCandidates),
     FakeElections(
         'Prague',
         'Presidential elections in Czech',
         'Czechia',
         _czechParties,
-        [welfare, health, education, immigrationAndIntegration]),
+        [welfare, health, education, immigrationAndIntegration], _czechCandidates),
     FakeElections('New York', 'Voting of local policemen', 'NY', _nyParties,
-        [welfare, health, education]),
+        [welfare, health, education], _nyCandidates),
   ];
 
   final FakeUser fakeTestUsers = FakeUser('test-1');

@@ -48,6 +48,7 @@ class FirebaseElections implements Elections {
 
   List<FirebaseQuestionGroup>? _loadedGroups;
   List<FirebaseParty>? _loadedParties;
+  List<FirebaseCandidate>? _loadedCandidates;
 
   @override
   Future<List<FirebaseQuestionGroup>> getGroups() async {
@@ -56,9 +57,9 @@ class FirebaseElections implements Elections {
     var collectionRef = reference.collection('groups').withConverter(
         fromFirestore: (snapshot, _) => FirebaseQuestionGroup.fromFirestore(snapshot),
         toFirestore: (group, _) => group.toFirestore());
-      return collectionRef
-          .get()
-          .then((querySnapshot) => querySnapshot.docs.map((groupRef) => groupRef.data()).toList());
+    return collectionRef
+        .get()
+        .then((querySnapshot) => querySnapshot.docs.map((groupRef) => groupRef.data()).toList());
   }
 
   @override
@@ -68,12 +69,24 @@ class FirebaseElections implements Elections {
     var collectionRef = reference.collection('parties').withConverter(
         fromFirestore: (snapshot, _) => FirebaseParty.fromFirestore(snapshot),
         toFirestore: (party, _) => party.toFirestore());
-    return collectionRef.get()
+    return collectionRef
+        .get()
         .then((partySnapshot) => partySnapshot.docs.map((partyRef) => partyRef.data()).toList());
   }
 
+  @override
+  Future<List<FirebaseCandidate>> getCandidates() {
+    if (_loadedCandidates != null) return Future.value(_loadedCandidates);
+
+    var collectionRef = reference.collection('candidated').withConverter(
+        fromFirestore: (snapshot, _) => FirebaseCandidate.fromFirestore(snapshot),
+        toFirestore: (candidate, _) => candidate.toFirestore());
+    return collectionRef.get().then((candidatesSnapshot) =>
+        candidatesSnapshot.docs.map((candidatesRef) => candidatesRef.data()).toList());
+  }
+
   FirebaseElections.fromFirestore(DocumentSnapshot<Map<String, dynamic>> snapshot)
-      : reference =snapshot.reference,
+      : reference = snapshot.reference,
         data = snapshot.data()!;
 
   Map<String, Object?> toFirestore() =>
@@ -95,6 +108,8 @@ class FirebaseParty implements Party {
 
   @override
   String get name => data['name'];
+
+  String get id => reference.id;
 }
 
 class FirebaseQuestionGroup implements QuestionGroup {
@@ -112,11 +127,14 @@ class FirebaseQuestionGroup implements QuestionGroup {
   Future<List<FirebaseQuestion>> getQuestions() {
     if (_loadedQuestions != null) return Future.value(_loadedQuestions);
 
-    return reference.collection('questions').withConverter(
-        fromFirestore: (snapshot, _) => FirebaseQuestion.fromFirestore(snapshot),
-        toFirestore: (question, _) => question.toFirestore())
-        .get().then((questionSnapshot) =>
-        questionSnapshot.docs.map((questionRef) => questionRef.data()).toList());
+    return reference
+        .collection('questions')
+        .withConverter(
+            fromFirestore: (snapshot, _) => FirebaseQuestion.fromFirestore(snapshot),
+            toFirestore: (question, _) => question.toFirestore())
+        .get()
+        .then((questionSnapshot) =>
+            questionSnapshot.docs.map((questionRef) => questionRef.data()).toList());
   }
 
   @override
@@ -159,3 +177,23 @@ class FirebaseQuestionResponse implements QuestionResponse {
         weight = 1;
 }
 
+class FirebaseCandidate implements Candidate {
+  DocumentReference<Map<String, dynamic>> reference;
+  Map<String, dynamic> data;
+
+  FirebaseCandidate.fromFirestore(DocumentSnapshot<Map<String, dynamic>> snapshot)
+      : reference = snapshot.reference,
+        data = snapshot.data()!;
+
+  Map<String, Object?> toFirestore() => {'firstName': firstName, 'lastName': lastName};
+
+  @override
+  String get firstName => data['firstName'];
+
+  @override
+  String get lastName => data['lastName'];
+
+  @override
+  // TODO: implement party
+  Party get party => throw UnimplementedError();
+}

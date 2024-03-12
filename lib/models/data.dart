@@ -12,6 +12,7 @@ abstract class Elections {
 
   Future<List<Party>> getParties();
   Future<List<QuestionGroup>> getGroups();
+  Future<List<Candidate>> getCandidates();
 }
 
 abstract class Party {
@@ -33,7 +34,6 @@ abstract class Question {
 
 /// Data for a single logged in user.
 abstract class User {
-
   String get id;
   Future<ElectionResponses> getResponses(Elections elections);
 }
@@ -50,4 +50,10 @@ abstract class QuestionResponse {
 
   set response(double? value);
   set weight(double? value);
+}
+
+abstract class Candidate {
+  Party get party;
+  String get firstName;
+  String get lastName;
 }

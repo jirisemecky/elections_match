@@ -1,10 +1,20 @@
 import 'package:elections_match/models/data.dart';
 import 'package:flutter/material.dart';
 
-class ResultsScreen extends StatelessWidget {
+class ResultsScreen extends StatefulWidget {
   final Elections elections;
 
   const ResultsScreen(this.elections, {super.key});
+
+  @override
+  State<StatefulWidget> createState() => _ResultScreenState();
+}
+
+class _ResultScreenState extends State<ResultsScreen> {
+  List<Candidate>? candidates;
+
+  List<Party>? parties;
+
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +38,15 @@ class ResultsScreen extends StatelessWidget {
     return [];
   }
 
+  void loadData() async {
+    widget.elections.getCandidates().then((value) => setState(() => candidates = value));
+    widget.elections.getParties().then((value) => setState(() => parties = value));
+  }
+
   List<Widget> buildPartyMatches() {
-    var partyMatches = <Widget>[];
-    for (final party in [] /*elections.getParties()*/) {
+    if (parties == null) return [];
+    List<Widget> partyMatches = [];
+    for (final party in parties!) {
       partyMatches.add(Row(
         children: [
           const Text(
